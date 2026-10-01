@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mission : Lockdown — CAP Agents de Sécurité</title>
+<title>Mission : Lockdown</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#e5e7eb;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,#d1d5db 39px,#d1d5db 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,#d1d5db 39px,#d1d5db 40px);color:#1e293b;min-height:100vh;padding-bottom:60px}
@@ -23,7 +23,6 @@ button:hover{opacity:.85}
 .btn-green{background:#16a34a;color:#fff}
 .btn-gray{background:#94a3b8;color:#fff}
 .btn-outline{background:#fff;color:#475569;border:1px solid #cbd5e1;font-size:13px;padding:8px 16px}
-.btn-orange{background:#ea580c;color:#fff}
 .flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .flex-col{display:flex;flex-direction:column;gap:8px}
 .clue-chip{border-radius:8px;padding:6px 14px;font-weight:700;font-size:13px;border:1px solid #cbd5e1;background:#f1f5f9;color:#94a3b8}
@@ -76,7 +75,12 @@ button:hover{opacity:.85}
 .code-display{font-size:32px;font-weight:900;letter-spacing:8px;color:#dc2626;text-align:center;background:#fff;border:2px dashed #fca5a5;border-radius:10px;padding:14px;margin:8px 0}
 .tag-green{background:#dcfce7;color:#15803d;border-radius:6px;padding:2px 10px;font-size:12px;font-weight:700}
 .save-ok{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 14px;font-size:12px;color:#15803d;text-align:center;margin-top:8px}
-.save-found{background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:10px 14px;font-size:13px;color:#1d4ed8;margin-top:8px}
+.save-found{background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:12px 14px;font-size:13px;color:#1d4ed8;margin-top:10px}
+/* ID input pair */
+.id-login{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.id-login input{width:64px;text-align:center;font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:3px;margin-bottom:0;padding:10px 6px}
+.id-login .sep{font-weight:900;font-size:22px;color:#64748b}
+/* HOME */
 #s-home{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#7f1d1d 100%);min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
 .hero-bg{position:absolute;font-size:160px;font-weight:900;color:rgba(255,255,255,.03);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
 .hero-badge{background:#dc2626;color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:20px;margin-bottom:16px;display:inline-block}
@@ -107,15 +111,14 @@ footer a{color:#93c5fd;text-decoration:none}
 </style>
 </head>
 <body>
-
-<footer>Créé par <strong style="color:#f59e0b">C. Iemfre</strong> — Mission : Lockdown — CAP Agents de Sécurité &nbsp;|&nbsp; <a href="#" id="lnk-rgpd">RGPD</a></footer>
+<footer>Créé par <strong style="color:#f59e0b">C. Iemfre</strong> — Mission : Lockdown &nbsp;|&nbsp; <a href="#" id="lnk-rgpd">RGPD</a></footer>
 
 <!-- HOME -->
 <div id="s-home" class="screen active">
   <div class="hero-bg">SECURIPRO</div>
   <div style="text-align:center;z-index:1;max-width:520px;width:100%">
     <div style="font-size:60px;margin-bottom:8px">🔴</div>
-    <div class="hero-badge pulse">CAP AGENTS DE SÉCURITÉ</div>
+    <div class="hero-badge pulse">SECURIPRO</div>
     <h1 class="hero-title">MISSION :<br><span>LOCKDOWN</span></h1>
     <p class="hero-sub">Une série d'incidents sur les sites SecuriPro. Ton équipe est appelée en renfort. 5 zones. 5 fragments. Le temps tourne.</p>
     <div class="hero-cards">
@@ -168,22 +171,24 @@ footer a{color:#93c5fd;text-decoration:none}
         <h3>🔑 Code d'accès élève</h3>
         <div class="code-display">CAPAS2627</div>
         <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12px;color:#92400e;line-height:1.6">
-          ⚠️ Code par défaut : <strong>CAPAS2627</strong>. Pour le modifier, ouvrez <code>index.html</code> et remplacez :<br>
+          ⚠️ Code par défaut : <strong>CAPAS2627</strong>. Pour modifier, ouvrez <code>index.html</code> et remplacez :<br>
           <code style="background:#fff;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">var STUDENT_CODE = "CAPAS2627";</code>
         </div>
         <div style="margin-top:10px;font-size:13px">Statut : <span class="tag-green">Code actif : CAPAS2627</span></div>
       </div>
       <div class="prof-section">
-        <h3>💾 Progressions sauvegardées</h3>
-        <div id="prof-saves" style="font-size:13px;color:#475569">Chargement...</div>
+        <h3>💾 Sauvegarde locale</h3>
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1d4ed8;line-height:1.7">
+          Les progressions sont sauvegardées <strong>directement sur l'appareil de chaque élève</strong> (localStorage), identifiées par leur code XX-XX.<br>
+          Elles ne sont pas accessibles depuis cet espace professeur. Chaque élève retrouve sa progression en ressaisissant son identifiant sur son propre appareil.
+        </div>
       </div>
       <div class="prof-section">
-        <h3>📋 Mission</h3>
+        <h3>📋 Mission : Lockdown</h3>
         <div style="font-size:13px;color:#475569;line-height:1.9">
-          <div>🎓 CAP Agents de Sécurité — 5 niveaux</div>
           <div>🔐 Code final : <strong style="color:#dc2626">AGENTS DE SÉCURITÉ EN ACTION</strong></div>
           <div>🗺 N1 QCM · N2 Rapports · N3 Oral · N4 Match · N5 Compte rendu</div>
-          <div>📊 Réussi +50 pts · Échoué -10 pts · Timer dépassé -10 pts</div>
+          <div>📊 Réussi +50 pts · Échoué -10 pts · Timer -10 pts</div>
         </div>
       </div>
     </div>
@@ -198,10 +203,10 @@ footer a{color:#93c5fd;text-decoration:none}
     <p style="color:#475569;font-size:13px;margin-bottom:12px">Cette application est un outil pédagogique développé pour un usage en classe.</p>
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;font-size:13px;color:#334155;line-height:1.8;margin-bottom:12px">
       <div style="margin-bottom:10px">🔐 <strong>Aucune donnée transmise à un serveur externe.</strong></div>
-      <div style="margin-bottom:10px">💾 <strong>La progression est sauvegardée localement</strong> (localStorage) sur cet appareil, identifiée par le nom d'équipe.</div>
+      <div style="margin-bottom:10px">💾 <strong>La progression est sauvegardée localement</strong> (localStorage) sur l'appareil de l'élève, identifiée par son code XX-XX. Elle peut être effacée en vidant le cache du navigateur.</div>
       <div style="margin-bottom:10px">🚫 <strong>Aucun cookie tiers, aucun traceur, aucune API externe.</strong></div>
-      <div style="margin-bottom:10px">👤 Seules données saisies : 2 lettres prénom + 2 lettres nom (format XX-YY), et vos réponses.</div>
-      <div>📄 Le PDF est créé localement dans votre navigateur.</div>
+      <div style="margin-bottom:10px">👤 Seules données saisies : 2 lettres prénom + 2 lettres nom (format XX-YY), et vos réponses aux exercices.</div>
+      <div>📄 Le PDF est créé localement dans votre navigateur et n'est envoyé à personne automatiquement.</div>
     </div>
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1d4ed8">
       Responsable pédagogique : <strong>C. Iemfre</strong> — Usage non commercial et pédagogique.
@@ -210,28 +215,30 @@ footer a{color:#93c5fd;text-decoration:none}
   </div>
 </div>
 
-<!-- TEAM -->
-<div id="s-team" class="screen centered">
+<!-- LOGIN ELEVE -->
+<div id="s-login" class="screen centered">
   <div class="card card-sm">
     <div style="text-align:center;margin-bottom:16px">
       <div style="font-size:40px">🛡️</div>
-      <div class="badge" style="margin-top:8px">IDENTIFICATION DE L'ÉQUIPE</div>
-      <h2 style="margin-top:4px">Bienvenue, Agents</h2>
+      <div class="badge" style="margin-top:8px">IDENTIFICATION AGENT</div>
+      <h2 style="margin-top:4px">Qui êtes-vous ?</h2>
+      <p style="color:#64748b;font-size:13px">Entrez votre identifiant personnel : 2 premières lettres de votre prénom et 2 premières lettres de votre nom.</p>
     </div>
-    <input type="text" id="inp-team" placeholder="Nom de l'équipe (ex : Alpha)" maxlength="40" autocomplete="off"/>
-    <div id="team-save-found" style="display:none" class="save-found">
-      💾 Progression trouvée pour cette équipe !<br>
-      <span id="team-save-detail" style="font-size:12px"></span>
+    <div style="text-align:center;margin-bottom:16px">
+      <div class="id-login" style="justify-content:center">
+        <input type="text" id="login-pre" maxlength="2" placeholder="CA" autocomplete="off"/>
+        <div class="sep">–</div>
+        <input type="text" id="login-nom" maxlength="2" placeholder="IE" autocomplete="off"/>
+      </div>
+      <p style="font-size:11px;color:#94a3b8;margin-top:4px">Ex : CA–IE pour Caroline Iemfre</p>
     </div>
-    <div style="font-size:13px;color:#64748b;margin:10px 0 8px;font-weight:600">Membres — 2 lettres prénom + 2 lettres nom :</div>
-    <div id="members-list">
-      <div class="id-row"><input type="text" class="inp-pre" maxlength="2" placeholder="CA"/><div class="id-sep">–</div><input type="text" class="inp-nom" maxlength="2" placeholder="IE"/></div>
-      <div class="id-row"><input type="text" class="inp-pre" maxlength="2"/><div class="id-sep">–</div><input type="text" class="inp-nom" maxlength="2"/></div>
-      <div class="id-row"><input type="text" class="inp-pre" maxlength="2"/><div class="id-sep">–</div><input type="text" class="inp-nom" maxlength="2"/></div>
-      <div class="id-row"><input type="text" class="inp-pre" maxlength="2"/><div class="id-sep">–</div><input type="text" class="inp-nom" maxlength="2"/></div>
-      <div class="id-row"><input type="text" class="inp-pre" maxlength="2"/><div class="id-sep">–</div><input type="text" class="inp-nom" maxlength="2"/></div>
+    <div id="login-save-found" style="display:none" class="save-found">
+      💾 Une progression existe pour cet identifiant !<br>
+      <span id="login-save-detail" style="font-size:12px;display:block;margin-top:4px"></span>
     </div>
-    <button class="btn-red" id="btn-start-game" style="width:100%;margin-top:12px;font-size:16px;padding:13px">DÉMARRER →</button>
+    <div style="font-size:13px;color:#64748b;margin:12px 0 6px;font-weight:600">Nom de votre équipe :</div>
+    <input type="text" id="inp-team" placeholder="Ex : Alpha" maxlength="40" autocomplete="off"/>
+    <button class="btn-red" id="btn-start-game" style="width:100%;margin-top:4px;font-size:16px;padding:13px">DÉMARRER →</button>
   </div>
 </div>
 
@@ -259,7 +266,7 @@ footer a{color:#93c5fd;text-decoration:none}
     <p style="color:#475569;line-height:1.7;font-style:italic;margin-bottom:12px">Votre équipe est appelée en renfort. Traversez cinq zones sécurisées et retrouvez les cinq fragments du code Lockdown.</p>
     <p style="color:#b45309;font-weight:700;margin-bottom:16px">Soyez vigilants. L'agence compte sur vous.</p>
     <div class="flex" id="clues-intro" style="margin-bottom:12px"></div>
-    <div class="scorebar">Score : <span id="score-intro">0</span> pts &nbsp;|&nbsp; Équipe : <span id="team-intro">—</span></div>
+    <div class="scorebar">Score : <span id="score-intro">0</span> pts &nbsp;|&nbsp; Agent : <span id="agent-intro">—</span> &nbsp;|&nbsp; Équipe : <span id="team-intro">—</span></div>
     <button class="btn-red" id="btn-go-level">ENTRER DANS LA ZONE →</button>
   </div>
 </div>
@@ -282,7 +289,7 @@ footer a{color:#93c5fd;text-decoration:none}
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
         <div><div class="badge" id="ex-badge"></div><div style="font-weight:700;font-size:15px" id="ex-title"></div></div>
         <div style="display:flex;align-items:center;gap:10px">
-          <button class="btn-green" id="btn-pdf-inline" style="font-size:12px;padding:6px 12px">📄 PDF</button>
+          <button class="btn-green" id="btn-pdf-ex" style="font-size:12px;padding:6px 12px">📄 PDF</button>
           <span style="color:#b45309;font-weight:700">Score : <span id="score-ex">0</span> pts</span>
         </div>
       </div>
@@ -320,348 +327,261 @@ footer a{color:#93c5fd;text-decoration:none}
 </div>
 
 <script>
-(function() {
+(function(){
 'use strict';
 
-// ══ CONFIG ══
 var STUDENT_CODE = "CAPAS2627";
-var PROF_CODE = "0504";
-var SAVE_PREFIX = "lockdown_v1_";
-var CLUES = ["AGENTS","DE","SÉCURITÉ","EN","ACTION !"];
-var FINAL_CODE = "AGENTS DE SÉCURITÉ EN ACTION";
+var PROF_CODE    = "0504";
+var SAVE_PREFIX  = "lockdown_v2_";
+var CLUES        = ["AGENTS","DE","SÉCURITÉ","EN","ACTION !"];
+var FINAL_CODE   = "AGENTS DE SÉCURITÉ EN ACTION";
 
-// ══ STATE ══
 var G = {
-  team:"", members:[], score:0, cluesFound:[],
+  agentId:"", team:"", score:0, cluesFound:[],
   levelIdx:0, exIdx:0, answers:{}, submitted:false,
   timerExpired:false, timerInt:null, timerLeft:0, timerTotal:0,
   drawnAgent:"", matchSel:null, matchPairs:{}, sessionLog:[]
 };
 
-// ══ STORAGE ══
-function storageOk() {
-  try { localStorage.setItem('_test','1'); localStorage.removeItem('_test'); return true; }
-  catch(e){ return false; }
+/* ── STORAGE ── */
+function storageOk(){
+  try{ localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true; }catch(e){ return false; }
 }
+function saveKey(id){ return SAVE_PREFIX + id.toUpperCase().replace(/[^A-Z0-9\-]/g,''); }
 
-function saveKey(team) {
-  return SAVE_PREFIX + normKey(team);
+function save(){
+  if(!G.agentId || !storageOk()) return;
+  try{
+    localStorage.setItem(saveKey(G.agentId), JSON.stringify({
+      v:2, agentId:G.agentId, team:G.team,
+      score:G.score, cluesFound:G.cluesFound,
+      levelIdx:G.levelIdx, exIdx:G.exIdx,
+      sessionLog:G.sessionLog,
+      savedAt:new Date().toLocaleString('fr-FR')
+    }));
+  }catch(e){}
 }
-
-function normKey(s) {
-  return s.trim().toUpperCase()
-    .replace(/[^A-Z0-9]/g,'_');
+function loadSave(id){
+  if(!id||!storageOk()) return null;
+  try{
+    var r=localStorage.getItem(saveKey(id));
+    if(!r) return null;
+    var d=JSON.parse(r);
+    return (d&&d.v===2)?d:null;
+  }catch(e){ return null; }
 }
-
-function saveProgress() {
-  if(!G.team || !storageOk()) return false;
-  var data = {
-    v:1, team:G.team, members:G.members,
-    score:G.score, cluesFound:G.cluesFound,
-    levelIdx:G.levelIdx, exIdx:G.exIdx,
-    sessionLog:G.sessionLog,
-    savedAt:new Date().toLocaleString('fr-FR')
-  };
-  try {
-    localStorage.setItem(saveKey(G.team), JSON.stringify(data));
-    return true;
-  } catch(e){ return false; }
-}
-
-function loadSave(team) {
-  if(!team || !storageOk()) return null;
-  try {
-    var raw = localStorage.getItem(saveKey(team));
-    if(!raw) return null;
-    var d = JSON.parse(raw);
-    if(d && d.v === 1 && d.team) return d;
-    return null;
-  } catch(e){ return null; }
-}
-
-function deleteSave(team) {
+function deleteSave(id){
   if(!storageOk()) return;
-  try { localStorage.removeItem(saveKey(team)); } catch(e){}
+  try{ localStorage.removeItem(saveKey(id)); }catch(e){}
 }
-
-function allSaves() {
-  var list = [];
+function allSaves(){
+  var list=[];
   if(!storageOk()) return list;
-  try {
-    for(var i=0; i<localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if(k && k.indexOf(SAVE_PREFIX)===0) {
-        try {
-          var d = JSON.parse(localStorage.getItem(k));
-          if(d && d.v===1 && d.team) list.push(d);
-        } catch(e){}
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(SAVE_PREFIX)===0){
+        try{ var d=JSON.parse(localStorage.getItem(k)); if(d&&d.v===2) list.push(d); }catch(e){}
       }
     }
-  } catch(e){}
+  }catch(e){}
   return list;
 }
 
-// ══ HELPERS ══
+/* ── HELPERS ── */
 function el(id){ return document.getElementById(id); }
-
-function show(id) {
-  var screens = document.querySelectorAll('.screen');
-  for(var i=0;i<screens.length;i++) screens[i].classList.remove('active');
-  var s = el(id);
-  if(s) s.classList.add('active');
+function show(id){
+  var ss=document.querySelectorAll('.screen');
+  for(var i=0;i<ss.length;i++) ss[i].classList.remove('active');
+  var s=el(id); if(s) s.classList.add('active');
   window.scrollTo(0,0);
 }
-
-function norm(s) {
+function norm(s){
   return (s||'').trim().toUpperCase()
-    .replace(/[\u00C9\u00C8\u00CA\u00CB]/g,'E')
-    .replace(/[\u00C0\u00C2\u00C4]/g,'A')
-    .replace(/[\u00D9\u00DB\u00DC]/g,'U')
-    .replace(/[\u00CE\u00CF\u00CC]/g,'I')
-    .replace(/[\u00D4\u00D6]/g,'O')
-    .replace(/\u00C7/g,'C');
+    .replace(/[\xC9\xC8\xCA\xCB]/g,'E').replace(/[\xC0\xC2\xC4]/g,'A')
+    .replace(/[\xD9\xDB\xDC]/g,'U').replace(/[\xCE\xCF\xCC]/g,'I')
+    .replace(/[\xD4\xD6]/g,'O').replace(/\xC7/g,'C');
 }
-
-function shuffle(a) {
-  var b=a.slice(), i, j, t;
-  for(i=b.length-1;i>0;i--){
-    j=Math.floor(Math.random()*(i+1));
-    t=b[i]; b[i]=b[j]; b[j]=t;
-  }
+function shuffle(a){
+  var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}
   return b;
 }
-
-function renderClues(cid) {
-  var c=el(cid); if(!c) return;
-  c.innerHTML='';
+function renderClues(cid){
+  var c=el(cid); if(!c) return; c.innerHTML='';
   for(var i=0;i<CLUES.length;i++){
     var d=document.createElement('div');
-    var found = G.cluesFound.indexOf(i)>=0;
-    d.className='clue-chip'+(found?' found':'');
-    d.textContent = found ? CLUES[i] : '???';
+    var f=G.cluesFound.indexOf(i)>=0;
+    d.className='clue-chip'+(f?' found':'');
+    d.textContent=f?CLUES[i]:'???';
     c.appendChild(d);
   }
 }
+function unlockClue(lvId){ var idx=lvId-1; if(G.cluesFound.indexOf(idx)<0) G.cluesFound.push(idx); }
+function drawAgent(){ return G.agentId||"Agent"; }
+function wire(id,fn){ var b=el(id); if(b) b.addEventListener('click',fn); }
 
-function unlockClue(lvId) {
-  var idx=lvId-1;
-  if(G.cluesFound.indexOf(idx)<0) G.cluesFound.push(idx);
-}
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',function(){
 
-function drawAgent() {
-  if(!G.members.length) return "Agent";
-  return G.members[Math.floor(Math.random()*G.members.length)];
-}
+  wire('btn-enter',function(){ el('inp-access').value=''; el('access-err').textContent=''; show('s-access'); });
+  wire('btn-go-prof',function(){ el('inp-prof').value=''; el('prof-err').textContent=''; show('s-prof-login'); });
+  wire('btn-go-rgpd',function(){ show('s-rgpd'); });
+  wire('lnk-rgpd',function(e){ e.preventDefault(); show('s-rgpd'); });
+  wire('btn-rgpd-back',function(){ show('s-home'); });
+  wire('btn-access-back',function(){ show('s-home'); });
+  wire('btn-prof-back',function(){ show('s-home'); });
+  wire('btn-prof-quit',function(){ show('s-home'); });
+  wire('btn-check-access',checkAccess);
+  wire('btn-check-prof',checkProf);
+  wire('btn-start-game',handleLogin);
+  wire('btn-resume-yes',doResume);
+  wire('btn-resume-no',function(){ deleteSave(G.agentId); startFresh(); });
+  wire('btn-resume-back',function(){ show('s-login'); });
+  wire('btn-go-level',goToLevel);
+  wire('btn-start-ex',startExercise);
+  wire('btn-submit',submitExercise);
+  wire('btn-check-final',checkFinal);
+  wire('btn-pdf-ex',generatePDF);
+  wire('btn-pdf-final',generatePDF);
 
-function wire(id, fn) {
-  var b = el(id);
-  if(b) b.addEventListener('click', fn);
-}
+  var ia=el('inp-access'); if(ia) ia.addEventListener('keydown',function(e){ if(e.key==='Enter') checkAccess(); });
+  var ip=el('inp-prof');   if(ip) ip.addEventListener('keydown',function(e){ if(e.key==='Enter') checkProf(); });
 
-// ══ INIT ══
-window.addEventListener('DOMContentLoaded', function() {
-
-  // Navigation
-  wire('btn-enter', function(){
-    el('inp-access').value=''; el('access-err').textContent='';
-    show('s-access');
-  });
-  wire('btn-go-prof', function(){
-    el('inp-prof').value=''; el('prof-err').textContent='';
-    show('s-prof-login');
-  });
-  wire('btn-go-rgpd', function(){ show('s-rgpd'); });
-  wire('lnk-rgpd', function(e){ e.preventDefault(); show('s-rgpd'); });
-  wire('btn-rgpd-back', function(){ show('s-home'); });
-  wire('btn-access-back', function(){ show('s-home'); });
-  wire('btn-prof-back', function(){ show('s-home'); });
-  wire('btn-prof-quit', function(){ show('s-home'); });
-
-  // Access
-  wire('btn-check-access', checkAccess);
-  var ia=el('inp-access');
-  if(ia) ia.addEventListener('keydown', function(e){ if(e.key==='Enter') checkAccess(); });
-
-  // Prof
-  wire('btn-check-prof', checkProfLogin);
-  var ip=el('inp-prof');
-  if(ip) ip.addEventListener('keydown', function(e){ if(e.key==='Enter') checkProfLogin(); });
-
-  // Team
-  wire('btn-start-game', handleTeamSubmit);
-  var it=el('inp-team');
-  if(it) it.addEventListener('input', function(){ checkTeamSave(this.value.trim()); });
-
-  // Resume
-  wire('btn-resume-yes', resumeMission);
-  wire('btn-resume-no', function(){ deleteSave(G.team); startFresh(); });
-  wire('btn-resume-back', function(){ show('s-team'); });
-
-  // Game flow
-  wire('btn-go-level', goToLevel);
-  wire('btn-start-ex', startExercise);
-  wire('btn-submit', submitExercise);
-  wire('btn-check-final', checkFinal);
-
-  // PDF boutons
-  wire('btn-pdf-inline', function(){ generatePDF(); });
-  wire('btn-pdf-final', function(){ generatePDF(); });
-
+  // Détection sauvegarde en temps réel sur les champs identifiant
+  function checkIdSave(){
+    var pre=(el('login-pre').value||'').trim().toUpperCase();
+    var nom=(el('login-nom').value||'').trim().toUpperCase();
+    var box=el('login-save-found'), det=el('login-save-detail');
+    if(pre.length===2&&nom.length===2){
+      var id=pre+'-'+nom;
+      var saved=loadSave(id);
+      if(saved){
+        box.style.display='block';
+        det.textContent='N'+(saved.levelIdx+1)+' · Ex'+(saved.exIdx+1)+' · Score : '+saved.score+' pts · '+saved.savedAt;
+      } else { box.style.display='none'; }
+    } else { box.style.display='none'; }
+  }
+  var lp=el('login-pre'), ln=el('login-nom');
+  if(lp){ lp.addEventListener('input',function(){ this.value=this.value.toUpperCase(); checkIdSave(); }); }
+  if(ln){ ln.addEventListener('input',function(){ this.value=this.value.toUpperCase(); checkIdSave(); }); }
 });
 
-// ══ SAVE DETECTION ══
-function checkTeamSave(teamName) {
-  var box=el('team-save-found'), det=el('team-save-detail');
-  if(!teamName){ box.style.display='none'; return; }
-  var saved=loadSave(teamName);
-  if(saved){
-    box.style.display='block';
-    det.textContent='Niveau '+(saved.levelIdx+1)+' · Ex '+(saved.exIdx+1)+' · Score : '+saved.score+' pts · '+saved.savedAt;
-  } else {
-    box.style.display='none';
-  }
-}
-
-// ══ ACCESS ══
-function checkAccess() {
+/* ── ACCESS ── */
+function checkAccess(){
   var v=(el('inp-access').value||'').trim().toUpperCase();
-  if(v===STUDENT_CODE){ el('access-err').textContent=''; el('inp-access').value=''; show('s-team'); }
-  else { el('access-err').textContent='Code incorrect.'; }
+  if(v===STUDENT_CODE){ el('access-err').textContent=''; el('inp-access').value=''; show('s-login'); }
+  else el('access-err').textContent='Code incorrect.';
 }
 
-// ══ PROF ══
-function checkProfLogin() {
+/* ── PROF ── */
+function checkProf(){
   if((el('inp-prof').value||'')===PROF_CODE){
-    el('prof-err').textContent='';
-    renderProfSaves();
-    show('s-prof');
-  } else { el('prof-err').textContent='Code incorrect.'; }
+    el('prof-err').textContent=''; renderProfSaves(); show('s-prof');
+  } else el('prof-err').textContent='Code incorrect.';
 }
-
-function renderProfSaves() {
+function renderProfSaves(){
   var box=el('prof-saves'); if(!box) return;
   var saves=allSaves();
-  if(!saves.length){ box.innerHTML='<em style="color:#94a3b8">Aucune progression sauvegardée.</em>'; return; }
+  if(!saves.length){ box.innerHTML='<em style="color:#94a3b8">Aucune progression sauvegardée sur cet appareil.</em>'; return; }
   var html='';
   for(var i=0;i<saves.length;i++){
     var d=saves[i];
     html+='<div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:6px">';
-    html+='<div><strong>'+d.team+'</strong><br><span style="font-size:11px;color:#64748b">N'+(d.levelIdx+1)+' Ex'+(d.exIdx+1)+' · '+d.score+' pts · '+d.savedAt+'</span></div>';
-    html+='<button onclick="deleteSaveProf(\''+encodeURIComponent(d.team)+'\')" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">Supprimer</button>';
+    html+='<div><strong style="color:#dc2626">'+d.agentId+'</strong> &nbsp;|&nbsp; Équipe : '+d.team+'<br>';
+    html+='<span style="font-size:11px;color:#64748b">N'+(d.levelIdx+1)+' Ex'+(d.exIdx+1)+' · '+d.score+' pts · '+d.savedAt+'</span></div>';
+    html+='<button onclick="deleteSaveProf(\''+encodeURIComponent(d.agentId)+'\')" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">Supprimer</button>';
     html+='</div>';
   }
   box.innerHTML=html;
 }
-
-window.deleteSaveProf = function(encoded) {
-  var team=decodeURIComponent(encoded);
-  if(confirm('Supprimer la progression de "'+team+'" ?')){
-    deleteSave(team); renderProfSaves();
-  }
+window.deleteSaveProf=function(enc){
+  var id=decodeURIComponent(enc);
+  if(confirm('Supprimer la progression de l\'agent "'+id+'" ?')){ deleteSave(id); renderProfSaves(); }
 };
 
-// ══ TEAM ══
-function collectMembers() {
-  var pres=document.querySelectorAll('.inp-pre'), noms=document.querySelectorAll('.inp-nom');
-  var members=[];
-  for(var i=0;i<pres.length;i++){
-    var pre=(pres[i].value||'').trim().toUpperCase();
-    var nom=(noms[i].value||'').trim().toUpperCase();
-    if(pre&&nom) members.push(pre+'-'+nom);
-  }
-  return members;
-}
-
-function handleTeamSubmit() {
-  var t=(el('inp-team').value||'').trim();
-  if(!t){ alert('Entrez le nom de votre équipe.'); return; }
-  G.team=t; G.members=collectMembers();
-  var saved=loadSave(t);
+/* ── LOGIN ── */
+function handleLogin(){
+  var pre=(el('login-pre').value||'').trim().toUpperCase();
+  var nom=(el('login-nom').value||'').trim().toUpperCase();
+  var team=(el('inp-team').value||'').trim();
+  if(pre.length!==2||nom.length!==2){ alert('Entrez 2 lettres pour le prénom et 2 lettres pour le nom.'); return; }
+  if(!team){ alert('Entrez le nom de votre équipe.'); return; }
+  G.agentId=pre+'-'+nom; G.team=team;
+  var saved=loadSave(G.agentId);
   if(saved){
     var lv=LEVELS[saved.levelIdx];
-    var ex=lv ? lv.exercises[saved.exIdx] : null;
+    var ex=lv?lv.exercises[saved.exIdx]:null;
     var html='';
-    html+='<div>👥 <strong>'+saved.team+'</strong></div>';
+    html+='<div>🆔 Agent : <strong>'+saved.agentId+'</strong></div>';
+    html+='<div>👥 Équipe : <strong>'+saved.team+'</strong></div>';
     html+='<div>📍 Niveau '+(saved.levelIdx+1)+' — Exercice '+(saved.exIdx+1)+'</div>';
     if(ex) html+='<div>📝 '+ex.title+'</div>';
-    html+='<div>🏆 Score actuel : <strong>'+saved.score+' pts</strong></div>';
+    html+='<div>🏆 Score : <strong>'+saved.score+' pts</strong></div>';
     html+='<div>🔓 Fragments : '+saved.cluesFound.length+' / '+CLUES.length+'</div>';
-    html+='<div>💾 Sauvegarde : '+saved.savedAt+'</div>';
+    html+='<div>💾 Sauvegardé le : '+saved.savedAt+'</div>';
     el('resume-detail').innerHTML=html;
     show('s-resume');
-  } else {
-    startFresh();
-  }
+  } else { startFresh(); }
 }
 
-function startFresh() {
+function startFresh(){
   G.score=0; G.cluesFound=[]; G.levelIdx=0; G.exIdx=0; G.sessionLog=[];
   el('score-intro').textContent=G.score;
+  el('agent-intro').textContent=G.agentId;
   el('team-intro').textContent=G.team;
   renderClues('clues-intro');
   show('s-intro');
 }
 
-function resumeMission() {
-  var saved=loadSave(G.team);
+function doResume(){
+  var saved=loadSave(G.agentId);
   if(!saved){ startFresh(); return; }
   G.score=saved.score||0;
   G.cluesFound=saved.cluesFound||[];
   G.levelIdx=saved.levelIdx||0;
   G.exIdx=saved.exIdx||0;
   G.sessionLog=saved.sessionLog||[];
-  if(saved.members&&saved.members.length) G.members=saved.members;
+  if(saved.team) G.team=saved.team;
   goToLevel();
 }
 
-// ══ TIMER ══
-function startTimer(sec) {
+/* ── TIMER ── */
+function startTimer(sec){
   G.timerLeft=sec; G.timerTotal=sec; G.timerExpired=false;
   el('timer-wrap').style.display='flex'; updTimer();
   G.timerInt=setInterval(function(){
     G.timerLeft--; updTimer();
-    if(G.timerLeft<=0){
-      clearInterval(G.timerInt); G.timerExpired=true;
-      G.score-=10; el('alert-timer').style.display='block';
-    }
+    if(G.timerLeft<=0){ clearInterval(G.timerInt); G.timerInt=null; G.timerExpired=true; G.score-=10; el('alert-timer').style.display='block'; }
   },1000);
 }
 function stopTimer(){ if(G.timerInt){ clearInterval(G.timerInt); G.timerInt=null; } }
 function updTimer(){
-  var m=Math.floor(G.timerLeft/60), s=G.timerLeft%60;
+  var m=Math.floor(G.timerLeft/60),s=G.timerLeft%60;
   el('timer-val').textContent=m+':'+(s<10?'0':'')+s;
   var pct=G.timerLeft/G.timerTotal;
   var col=pct>0.5?'#16a34a':pct>0.25?'#d97706':'#dc2626';
-  el('timer-bar').style.width=(pct*100)+'%';
-  el('timer-bar').style.background=col;
-  el('timer-val').style.color=col;
+  el('timer-bar').style.width=(pct*100)+'%'; el('timer-bar').style.background=col; el('timer-val').style.color=col;
 }
 
-// ══ FLOW ══
-function goToLevel() {
+/* ── FLOW ── */
+function goToLevel(){
   var lv=LEVELS[G.levelIdx];
   el('lv-badge').textContent='ZONE '+(G.levelIdx+1)+' / '+LEVELS.length;
-  el('lv-title').textContent=lv.title;
-  el('lv-intro').textContent=lv.intro;
-  el('score-lv').textContent=G.score;
+  el('lv-title').textContent=lv.title; el('lv-intro').textContent=lv.intro; el('score-lv').textContent=G.score;
   show('s-level');
 }
-
-function startExercise() {
+function startExercise(){
   var lv=LEVELS[G.levelIdx], ex=lv.exercises[G.exIdx];
-  G.answers={}; G.submitted=false; G.timerExpired=false;
-  G.matchSel=null; G.matchPairs={};
-  G.drawnAgent=drawAgent();
-  stopTimer();
+  G.answers={}; G.submitted=false; G.timerExpired=false; G.matchSel=null; G.matchPairs={};
+  G.drawnAgent=drawAgent(); stopTimer();
   ['timer-wrap','alert-timer'].forEach(function(id){ el(id).style.display='none'; });
   ['result-area','report-area','questions-area','match-area','oral-area'].forEach(function(id){ el(id).innerHTML=''; });
-  el('btn-submit').style.display='';
-  el('btn-submit').className='btn-gray';
+  el('btn-submit').style.display=''; el('btn-submit').className='btn-gray';
   el('ex-badge').textContent='NIVEAU '+lv.id+' — EXERCICE '+(G.exIdx+1);
   el('ex-title').textContent=ex.title;
   el('ex-instr').textContent=ex.instruction.replace('[tiré au sort]',G.drawnAgent);
-  el('score-ex').textContent=G.score;
-  show('s-exercise');
+  el('score-ex').textContent=G.score; show('s-exercise');
   if(ex.timer) startTimer(ex.timer);
   if(ex.report) el('report-area').innerHTML='<div class="report-block"><div class="report-title">📄 Incident Report</div>'+ex.report.replace(/\n/g,'<br>')+'</div>';
   if(ex.type==='qcm') renderQCM(ex);
@@ -670,79 +590,58 @@ function startExercise() {
   else if(ex.type==='oral') renderOral(ex);
 }
 
-// ══ RENDER ══
-function renderQCM(ex) {
-  var h='', i, j;
+/* ── RENDER ── */
+function renderQCM(ex){
+  var h='',i,j;
   for(i=0;i<ex.questions.length;i++){
     var q=ex.questions[i];
     h+='<div class="card" style="margin-bottom:10px"><div style="font-weight:600;font-size:14px;margin-bottom:10px">'+(i+1)+'. '+q.q+'</div><div class="flex-col">';
-    for(j=0;j<q.opts.length;j++){
-      h+='<button class="opt-btn" id="opt-'+i+'-'+j+'" data-qi="'+i+'" data-j="'+j+'">'+String.fromCharCode(65+j)+') '+q.opts[j]+'</button>';
-    }
+    for(j=0;j<q.opts.length;j++) h+='<button class="opt-btn" id="opt-'+i+'-'+j+'" data-qi="'+i+'" data-j="'+j+'">'+String.fromCharCode(65+j)+') '+q.opts[j]+'</button>';
     h+='</div></div>';
   }
   el('questions-area').innerHTML=h;
   var btns=document.querySelectorAll('.opt-btn');
-  for(var k=0;k<btns.length;k++){
-    btns[k].addEventListener('click',(function(b){ return function(){ selectOpt(+b.dataset.qi,+b.dataset.j,ex); }; })(btns[k]));
-  }
+  for(var k=0;k<btns.length;k++) (function(b){ b.addEventListener('click',function(){ selectOpt(+b.dataset.qi,+b.dataset.j,ex); }); })(btns[k]);
 }
-
-function renderTF(ex) {
-  var h='', i;
+function renderTF(ex){
+  var h='',i;
   for(i=0;i<ex.questions.length;i++){
     var q=ex.questions[i];
     h+='<div class="card" style="margin-bottom:10px"><div style="font-weight:600;font-size:14px;margin-bottom:10px">'+(i+1)+'. '+q.q+'</div>';
-    h+='<div class="tf-wrap">';
-    h+='<button class="tf-btn" id="tf-'+i+'-true" data-qi="'+i+'" data-v="true">TRUE ✓</button>';
-    h+='<button class="tf-btn" id="tf-'+i+'-false" data-qi="'+i+'" data-v="false">FALSE ✗</button>';
-    h+='</div></div>';
+    h+='<div class="tf-wrap"><button class="tf-btn" id="tf-'+i+'-true" data-qi="'+i+'" data-v="true">TRUE ✓</button><button class="tf-btn" id="tf-'+i+'-false" data-qi="'+i+'" data-v="false">FALSE ✗</button></div></div>';
   }
   el('questions-area').innerHTML=h;
   var btns=document.querySelectorAll('.tf-btn');
-  for(var k=0;k<btns.length;k++){
-    btns[k].addEventListener('click',(function(b){ return function(){ selectTF(+b.dataset.qi,b.dataset.v==='true',ex); }; })(btns[k]));
-  }
+  for(var k=0;k<btns.length;k++) (function(b){ b.addEventListener('click',function(){ selectTF(+b.dataset.qi,b.dataset.v==='true',ex); }); })(btns[k]);
 }
-
-function renderMatch(ex) {
-  var i;
-  var terms=shuffle(ex.pairs.map(function(_,i){return i;}));
-  var defs=shuffle(ex.pairs.map(function(_,i){return i;}));
-  var h='<div style="font-size:12px;color:#64748b;margin-bottom:10px">🟣 Sélectionné &nbsp; 🟢 Correct &nbsp; 🔴 Incorrect</div>';
-  h+='<div class="match-container">';
+function renderMatch(ex){
+  var i, terms=shuffle(ex.pairs.map(function(_,i){return i;})), defs=shuffle(ex.pairs.map(function(_,i){return i;}));
+  var h='<div style="font-size:12px;color:#64748b;margin-bottom:10px">🟣 Sélectionné &nbsp; 🟢 Correct &nbsp; 🔴 Incorrect</div><div class="match-container">';
   h+='<div><div class="match-col-title">Termes</div><div class="match-col">';
-  for(i=0;i<terms.length;i++){ h+='<div class="match-item" id="mt-'+terms[i]+'" data-idx="'+terms[i]+'">'+ex.pairs[terms[i]].term+'</div>'; }
+  for(i=0;i<terms.length;i++) h+='<div class="match-item" id="mt-'+terms[i]+'" data-idx="'+terms[i]+'">'+ex.pairs[terms[i]].term+'</div>';
   h+='</div></div><div><div class="match-col-title">Définitions</div><div class="match-col">';
-  for(i=0;i<defs.length;i++){ h+='<div class="match-item" id="md-'+defs[i]+'" data-idx="'+defs[i]+'">'+ex.pairs[defs[i]].def+'</div>'; }
-  h+='</div></div></div>';
-  h+='<div id="match-prog" style="font-size:13px;color:#64748b;margin-bottom:8px;text-align:center">0 / '+ex.pairs.length+' associations faites</div>';
+  for(i=0;i<defs.length;i++) h+='<div class="match-item" id="md-'+defs[i]+'" data-idx="'+defs[i]+'">'+ex.pairs[defs[i]].def+'</div>';
+  h+='</div></div></div><div id="match-prog" style="font-size:13px;color:#64748b;margin-bottom:8px;text-align:center">0 / '+ex.pairs.length+' associations faites</div>';
   el('match-area').innerHTML=h;
-  var mts=document.querySelectorAll('[id^="mt-"]');
-  var mds=document.querySelectorAll('[id^="md-"]');
-  for(i=0;i<mts.length;i++){ mts[i].addEventListener('click',(function(b){ return function(){ clickTerm(+b.dataset.idx,ex); }; })(mts[i])); }
-  for(i=0;i<mds.length;i++){ mds[i].addEventListener('click',(function(b){ return function(){ clickDef(+b.dataset.idx,ex); }; })(mds[i])); }
+  var mts=document.querySelectorAll('[id^="mt-"]'), mds=document.querySelectorAll('[id^="md-"]');
+  for(i=0;i<mts.length;i++) (function(b){ b.addEventListener('click',function(){ clickTerm(+b.dataset.idx,ex); }); })(mts[i]);
+  for(i=0;i<mds.length;i++) (function(b){ b.addEventListener('click',function(){ clickDef(+b.dataset.idx,ex); }); })(mds[i]);
   updMatchBtn(ex);
 }
-
 function clickTerm(idx,ex){
   if(G.submitted) return;
-  var keys=Object.keys(G.matchPairs).map(Number);
-  if(keys.indexOf(idx)>=0) return;
+  if(Object.keys(G.matchPairs).map(Number).indexOf(idx)>=0) return;
   if(G.matchSel&&G.matchSel.type==='term'&&G.matchSel.idx===idx){ el('mt-'+idx).classList.remove('selected'); G.matchSel=null; return; }
   if(G.matchSel&&G.matchSel.type==='def'){ makePair(idx,G.matchSel.idx,ex); return; }
-  var mts=document.querySelectorAll('[id^="mt-"]');
-  for(var i=0;i<mts.length;i++) mts[i].classList.remove('selected');
+  var ms=document.querySelectorAll('[id^="mt-"]'); for(var i=0;i<ms.length;i++) ms[i].classList.remove('selected');
   el('mt-'+idx).classList.add('selected'); G.matchSel={type:'term',idx:idx};
 }
 function clickDef(idx,ex){
   if(G.submitted) return;
-  var vals=Object.values(G.matchPairs).map(Number);
-  if(vals.indexOf(idx)>=0) return;
+  if(Object.values(G.matchPairs).map(Number).indexOf(idx)>=0) return;
   if(G.matchSel&&G.matchSel.type==='def'&&G.matchSel.idx===idx){ el('md-'+idx).classList.remove('selected'); G.matchSel=null; return; }
   if(G.matchSel&&G.matchSel.type==='term'){ makePair(G.matchSel.idx,idx,ex); return; }
-  var mds=document.querySelectorAll('[id^="md-"]');
-  for(var i=0;i<mds.length;i++) mds[i].classList.remove('selected');
+  var ms=document.querySelectorAll('[id^="md-"]'); for(var i=0;i<ms.length;i++) ms[i].classList.remove('selected');
   el('md-'+idx).classList.add('selected'); G.matchSel={type:'def',idx:idx};
 }
 function makePair(ti,di,ex){
@@ -758,81 +657,61 @@ function updMatchBtn(ex){ el('btn-submit').className=Object.keys(G.matchPairs).l
 function renderOral(ex){
   el('btn-submit').style.display='none';
   var h='<div class="draw-badge">🎲 Agent désigné : <strong>'+G.drawnAgent+'</strong></div>';
-  h+='<div class="oral-card" style="background:#fff7ed;border-color:#f97316"><div class="oral-label" style="color:#c2410c">📢 Présentation devant le professeur</div>';
-  h+="L'agent désigné se lève et présente oralement la situation devant le professeur, sans notes ni préparation.</div>";
+  h+='<div class="oral-card" style="background:#fff7ed;border-color:#f97316"><div class="oral-label" style="color:#c2410c">📢 Présentation devant le professeur</div>L\'agent désigné se lève et présente oralement la situation devant le professeur, sans notes ni préparation.</div>';
   h+='<div class="oral-card"><div class="oral-label">📋 Situation</div>'+ex.situation.replace(/\n/g,'<br>')+'</div>';
   h+='<div class="oral-card"><div class="oral-label">🎯 Your task</div>'+ex.task+'</div>';
   h+='<div class="oral-card"><div class="oral-label">📊 Critères</div><ul class="oral-assess">';
   for(var i=0;i<ex.assess.length;i++) h+='<li>'+ex.assess[i]+'</li>';
   h+='</ul><p style="color:#dc2626;font-size:12px;font-style:italic;margin-top:10px">⏱ Pas de préparation. Pas de notes. Ne pas lire le texte.</p></div>';
-  h+='<div class="card"><div style="font-weight:700;margin-bottom:8px">Code du professeur (1–10) :</div>';
-  h+='<input type="number" id="oral-code" min="1" max="10" style="width:90px;text-align:center;font-size:22px;font-weight:700;margin-bottom:0"/>';
-  h+='<button class="btn-blue" id="btn-oral-val" style="margin-left:10px">VALIDER</button></div>';
+  h+='<div class="card"><div style="font-weight:700;margin-bottom:8px">Code du professeur (1–10) :</div><input type="number" id="oral-code" min="1" max="10" style="width:90px;text-align:center;font-size:22px;font-weight:700;margin-bottom:0"/><button class="btn-blue" id="btn-oral-val" style="margin-left:10px">VALIDER</button></div>';
   el('oral-area').innerHTML=h;
   el('btn-oral-val').addEventListener('click',submitOral);
 }
 
-// ══ INTERACTIONS ══
+/* ── INTERACTIONS ── */
 function selectOpt(qi,j,ex){
   if(G.submitted) return;
-  var btns=document.querySelectorAll('[id^="opt-'+qi+'-"]');
-  for(var k=0;k<btns.length;k++) btns[k].classList.remove('selected');
-  el('opt-'+qi+'-'+j).classList.add('selected');
-  G.answers[qi]=j;
+  var bs=document.querySelectorAll('[id^="opt-'+qi+'-"]'); for(var k=0;k<bs.length;k++) bs[k].classList.remove('selected');
+  el('opt-'+qi+'-'+j).classList.add('selected'); G.answers[qi]=j;
   el('btn-submit').className=Object.keys(G.answers).length>=ex.questions.length?'btn-green':'btn-gray';
 }
 function selectTF(qi,val,ex){
   if(G.submitted) return;
-  el('tf-'+qi+'-true').classList.remove('selected');
-  el('tf-'+qi+'-false').classList.remove('selected');
-  el('tf-'+qi+'-'+(val?'true':'false')).classList.add('selected');
-  G.answers[qi]=val;
+  el('tf-'+qi+'-true').classList.remove('selected'); el('tf-'+qi+'-false').classList.remove('selected');
+  el('tf-'+qi+'-'+(val?'true':'false')).classList.add('selected'); G.answers[qi]=val;
   el('btn-submit').className=Object.keys(G.answers).length>=ex.questions.length?'btn-green':'btn-gray';
 }
 
-// ══ SUBMIT ══
+/* ── SUBMIT ── */
 function submitExercise(){
   var lv=LEVELS[G.levelIdx], ex=lv.exercises[G.exIdx];
   if(ex.type==='oral') return;
   if(ex.type==='match'){ submitMatch(ex); return; }
   if(Object.keys(G.answers).length<ex.questions.length){ alert('Répondez à toutes les questions.'); return; }
   stopTimer(); G.submitted=true;
-  var correct=0, details=[], i, sel, ok, b, j;
+  var correct=0, details=[], i, j, sel, ok, b;
   if(ex.type==='qcm'){
     for(i=0;i<ex.questions.length;i++){
       var q=ex.questions[i]; sel=G.answers[i]; ok=(sel===q.ans);
-      for(j=0;j<q.opts.length;j++){
-        b=el('opt-'+i+'-'+j); if(!b) continue;
-        b.classList.add('locked');
-        if(j===q.ans) b.classList.add('correct');
-        else if(j===sel) b.classList.add('wrong');
-      }
+      for(j=0;j<q.opts.length;j++){ b=el('opt-'+i+'-'+j); if(!b) continue; b.classList.add('locked'); if(j===q.ans) b.classList.add('correct'); else if(j===sel) b.classList.add('wrong'); }
       if(ok) correct++;
       details.push({question:q.q, userAns:q.opts[sel]!==undefined?q.opts[sel]:'—', correctAns:q.opts[q.ans], isCorrect:ok, correction:''});
     }
   } else {
     for(i=0;i<ex.questions.length;i++){
       var q2=ex.questions[i]; sel=G.answers[i]; ok=(sel===q2.ans);
-      var vals=[true,false];
-      for(j=0;j<vals.length;j++){
-        b=el('tf-'+i+'-'+vals[j]); if(!b) continue;
-        b.classList.add('locked');
-        if(vals[j]===q2.ans) b.classList.add('correct');
-        else if(vals[j]===sel) b.classList.add('wrong');
-      }
+      var vv=[true,false];
+      for(j=0;j<vv.length;j++){ b=el('tf-'+i+'-'+vv[j]); if(!b) continue; b.classList.add('locked'); if(vv[j]===q2.ans) b.classList.add('correct'); else if(vv[j]===sel) b.classList.add('wrong'); }
       if(ok) correct++;
       details.push({question:q2.q, userAns:sel, correctAns:q2.ans, isCorrect:ok, correction:q2.correction||''});
     }
   }
-  finalizeSubmit(ex, correct, ex.questions.length, details, '');
+  finalizeEx(ex, correct, ex.questions.length, details, '');
 }
-
 function submitMatch(ex){
   stopTimer(); G.submitted=true;
-  var items=document.querySelectorAll('.match-item');
-  for(var k=0;k<items.length;k++){ items[k].classList.add('disabled'); items[k].onclick=null; }
-  var correct=0, wrongHtml='', details=[];
-  var keys=Object.keys(G.matchPairs);
+  var items=document.querySelectorAll('.match-item'); for(var k=0;k<items.length;k++) items[k].classList.add('disabled');
+  var correct=0, wrongHtml='', details=[], keys=Object.keys(G.matchPairs);
   for(var i=0;i<keys.length;i++){
     var t=+keys[i], d=+G.matchPairs[keys[i]], ok=(t===d);
     var te=el('mt-'+t), de=el('md-'+d);
@@ -843,9 +722,8 @@ function submitMatch(ex){
     details.push({question:ex.pairs[t].term, userAns:ex.pairs[d].def, correctAns:ex.pairs[t].def, isCorrect:ok, correction:''});
   }
   el('match-prog').textContent=correct+' / '+ex.pairs.length+' bonnes associations';
-  finalizeSubmit(ex, correct, ex.pairs.length, details, wrongHtml);
+  finalizeEx(ex, correct, ex.pairs.length, details, wrongHtml);
 }
-
 function submitOral(){
   var code=parseInt((el('oral-code').value||'0'));
   if(!code||code<1||code>10){ alert('Entrez un code entre 1 et 10.'); return; }
@@ -853,29 +731,21 @@ function submitOral(){
   var passed=code>=ex.passScore, pts=passed?50:-10;
   G.score+=pts; el('score-ex').textContent=G.score;
   if(passed) unlockClue(lv.id);
-  var details=[{question:'Présentation orale', userAns:code+'/10', correctAns:ex.passScore+'/10 requis', isCorrect:passed, correction:''}];
-  G.sessionLog.push({levelId:lv.id, levelTitle:lv.title, exTitle:ex.title, exType:'oral', score:code, total:10, passed:passed, pts:pts, timerExpired:false, passScore:ex.passScore, details:details});
-  saveProgress();
-  showResult(code, 10, passed, ex, pts, '');
+  G.sessionLog.push({levelId:lv.id,levelTitle:lv.title,exTitle:ex.title,exType:'oral',score:code,total:10,passed:passed,pts:pts,timerExpired:false,passScore:ex.passScore,details:[{question:'Présentation orale',userAns:code+'/10',correctAns:ex.passScore+'/10 requis',isCorrect:passed,correction:''}]});
+  save(); showResult(code,10,passed,ex,pts,'');
 }
-
-function finalizeSubmit(ex, correct, total, details, wrongHtml){
+function finalizeEx(ex,correct,total,details,wrongHtml){
   var lv=LEVELS[G.levelIdx];
   var passed=correct>=ex.passScore, pts=passed?50:-10;
   G.score+=pts; el('score-ex').textContent=G.score;
   if(passed) unlockClue(lv.id);
-  G.sessionLog.push({levelId:lv.id, levelTitle:lv.title, exTitle:ex.title, exType:ex.type, score:correct, total:total, passed:passed, pts:pts, timerExpired:G.timerExpired, passScore:ex.passScore, details:details});
-  saveProgress();
-  el('btn-submit').style.display='none';
-  if(!wrongHtml && !passed && ex.type==='truefalse'){
-    for(var i=0;i<details.length;i++){
-      if(!details[i].isCorrect && details[i].correction)
-        wrongHtml+='<div style="margin-bottom:4px">❌ Q'+(i+1)+': '+details[i].correction+'</div>';
-    }
+  if(!wrongHtml&&!passed&&ex.type==='truefalse'){
+    for(var i=0;i<details.length;i++) if(!details[i].isCorrect&&details[i].correction) wrongHtml+='<div style="margin-bottom:4px">❌ Q'+(i+1)+': '+details[i].correction+'</div>';
   }
-  showResult(correct, total, passed, ex, pts, wrongHtml);
+  G.sessionLog.push({levelId:lv.id,levelTitle:lv.title,exTitle:ex.title,exType:ex.type,score:correct,total:total,passed:passed,pts:pts,timerExpired:G.timerExpired,passScore:ex.passScore,details:details});
+  save(); el('btn-submit').style.display='none';
+  showResult(correct,total,passed,ex,pts,wrongHtml);
 }
-
 function showResult(score,total,passed,ex,pts,extra){
   var lv=LEVELS[G.levelIdx];
   var h='<div class="'+(passed?'result-pass':'result-fail')+'">';
@@ -884,29 +754,22 @@ function showResult(score,total,passed,ex,pts,extra){
   h+='<div style="color:'+(passed?'#15803d':'#dc2626')+';margin-bottom:8px">'+(pts>0?'+':'')+pts+' points'+(G.timerExpired?' — Pénalité timer : -10 pts':'')+'</div>';
   if(passed) h+='<div class="clue-reveal">🔓 Fragment récupéré : <span>'+CLUES[lv.id-1]+'</span></div>';
   if(extra) h+='<div style="margin-top:10px;font-size:12px;color:#64748b">'+extra+'</div>';
-  h+='<div class="save-ok">💾 Progression sauvegardée automatiquement.</div>';
+  h+='<div class="save-ok">💾 Progression sauvegardée — identifiant '+G.agentId+'</div>';
   var isLastEx=G.exIdx>=lv.exercises.length-1, isLastLv=G.levelIdx>=LEVELS.length-1;
   var lbl=passed?(isLastLv?'TERMINER LA MISSION':'NIVEAU SUIVANT →'):(isLastEx?(isLastLv?'TERMINER LA MISSION':'NIVEAU SUIVANT →'):'EXERCICE SUIVANT →');
   h+='<button class="btn-blue btn-nxt" style="margin-top:12px">'+lbl+'</button></div>';
   el('result-area').innerHTML=h;
   el('result-area').querySelector('.btn-nxt').addEventListener('click',function(){ nextStep(passed); });
 }
-
 function nextStep(passed){
   var lv=LEVELS[G.levelIdx];
   if(passed||G.exIdx>=lv.exercises.length-1){
     unlockClue(lv.id);
-    if(G.levelIdx>=LEVELS.length-1){
-      deleteSave(G.team);
-      renderClues('clues-final'); el('score-final').textContent=G.score; show('s-final'); return;
-    }
+    if(G.levelIdx>=LEVELS.length-1){ deleteSave(G.agentId); renderClues('clues-final'); el('score-final').textContent=G.score; show('s-final'); return; }
     G.levelIdx++; G.exIdx=0;
   } else { G.exIdx++; }
-  saveProgress();
-  if(G.levelIdx<LEVELS.length && G.exIdx===0 && !passed) goToLevel();
-  else if(G.levelIdx<LEVELS.length) goToLevel();
+  save(); goToLevel();
 }
-
 function checkFinal(){
   var ok=norm(el('inp-final').value)===norm(FINAL_CODE);
   el('final-result').innerHTML=ok?
@@ -914,45 +777,39 @@ function checkFinal(){
     '<div class="final-fail">❌ Code incorrect. Vérifiez vos fragments.</div>';
 }
 
-// ══ PDF ══
+/* ── PDF ── */
 function generatePDF(){
-  var team=G.team||'—', members=G.members.length?G.members.join(', '):'—';
   var date=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Bilan Mission Lockdown</title><style>';
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Bilan '+G.agentId+'</title><style>';
   html+='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:12px;color:#1e293b}';
-  html+='.header{background:#0f172a;color:#fff;padding:20px 32px}.header h1{color:#ef4444;font-size:22px;margin-bottom:4px}.header p{color:#94a3b8;font-size:11px}';
-  html+='.body{max-width:800px;margin:0 auto;padding:24px}';
-  html+='h2{font-size:15px;color:#1e293b;border-bottom:2px solid #e2e8f0;padding-bottom:4px;margin:20px 0 10px}';
-  html+='.meta{display:flex;gap:20px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;margin-bottom:20px}';
-  html+='.meta div{font-size:12px;color:#475569}.meta strong{color:#1e293b}';
-  html+='.clues{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}';
-  html+='.clue-ok{background:#dcfce7;border:1px solid #16a34a;border-radius:6px;padding:3px 12px;font-weight:700;font-size:12px;color:#15803d}';
-  html+='.clue-no{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:3px 12px;font-size:12px;color:#94a3b8}';
-  html+='.ex-block{border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:14px;page-break-inside:avoid}';
-  html+='.ex-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}';
-  html+='.ex-name{font-weight:700;font-size:13px}.ex-lv{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:1px}';
-  html+='.tag{border-radius:5px;padding:2px 9px;font-size:11px;font-weight:700}.tp{background:#dcfce7;color:#15803d}.tf{background:#fee2e2;color:#dc2626}.tt{background:#fef3c7;color:#92400e;margin-left:4px}';
-  html+='.sc{font-size:12px;color:#475569;margin-bottom:8px}';
-  html+='.qr{margin-bottom:6px;padding:7px 10px;border-radius:6px;font-size:12px;line-height:1.5}';
+  html+='.hd{background:#0f172a;color:#fff;padding:20px 32px}.hd h1{color:#ef4444;font-size:22px;margin-bottom:4px}.hd p{color:#94a3b8;font-size:11px}';
+  html+='.bd{max-width:800px;margin:0 auto;padding:24px}h2{font-size:15px;border-bottom:2px solid #e2e8f0;padding-bottom:4px;margin:20px 0 10px}';
+  html+='.meta{display:flex;gap:20px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#475569}';
+  html+='.meta strong{color:#1e293b}.clues{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}';
+  html+='.cok{background:#dcfce7;border:1px solid #16a34a;border-radius:6px;padding:3px 12px;font-weight:700;font-size:12px;color:#15803d}';
+  html+='.cno{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:3px 12px;font-size:12px;color:#94a3b8}';
+  html+='.eb{border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:14px;page-break-inside:avoid}';
+  html+='.eh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}';
+  html+='.en{font-weight:700;font-size:13px}.el{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:1px}';
+  html+='.tg{border-radius:5px;padding:2px 9px;font-size:11px;font-weight:700}.tp{background:#dcfce7;color:#15803d}.tf{background:#fee2e2;color:#dc2626}.tt{background:#fef3c7;color:#92400e;margin-left:4px}';
+  html+='.sc{font-size:12px;color:#475569;margin-bottom:8px}.qr{margin-bottom:6px;padding:7px 10px;border-radius:6px;font-size:12px;line-height:1.5}';
   html+='.qok{background:#f0fdf4;border-left:3px solid #16a34a}.qbad{background:#fff1f2;border-left:3px solid #dc2626}';
   html+='.qt{font-weight:700;margin-bottom:2px}.qa{color:#475569}.qc{color:#dc2626;font-style:italic}.qh{color:#2563eb;font-size:11px}';
-  html+='.sum{background:#0f172a;color:#fff;border-radius:10px;padding:16px 20px;margin-top:20px}';
-  html+='.sum h2{color:#ef4444;border:none;margin:0 0 10px}.sr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #334155;font-size:12px}';
-  html+='.stot{font-weight:700;font-size:14px;color:#fbbf24;padding-top:8px}';
-  html+='.foot{text-align:center;color:#94a3b8;font-size:10px;margin-top:20px;border-top:1px solid #e2e8f0;padding-top:12px}';
+  html+='.sm{background:#0f172a;color:#fff;border-radius:10px;padding:16px 20px;margin-top:20px}';
+  html+='.sm h2{color:#ef4444;border:none;margin:0 0 10px}.sr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #334155;font-size:12px}';
+  html+='.st{font-weight:700;font-size:14px;color:#fbbf24;padding-top:8px}.ft{text-align:center;color:#94a3b8;font-size:10px;margin-top:20px;border-top:1px solid #e2e8f0;padding-top:12px}';
   html+='</style></head><body>';
-  html+='<div class="header"><h1>🔴 MISSION : LOCKDOWN</h1><p>CAP Agents de Sécurité — SecuriPro | Bilan de session</p></div>';
-  html+='<div class="body">';
-  html+='<div class="meta"><div>🏷 Équipe : <strong>'+team+'</strong></div><div>👥 <strong>'+members+'</strong></div><div>📅 <strong>'+date+'</strong></div><div>🏆 Score : <strong style="color:#dc2626">'+G.score+' pts</strong></div></div>';
+  html+='<div class="hd"><h1>🔴 MISSION : LOCKDOWN</h1><p>SecuriPro | Bilan individuel</p></div><div class="bd">';
+  html+='<div class="meta"><div>🆔 Agent : <strong>'+G.agentId+'</strong></div><div>👥 Équipe : <strong>'+G.team+'</strong></div><div>📅 <strong>'+date+'</strong></div><div>🏆 Score : <strong style="color:#dc2626">'+G.score+' pts</strong></div></div>';
   html+='<h2>🔐 Fragments</h2><div class="clues">';
-  for(var i=0;i<CLUES.length;i++) html+=G.cluesFound.indexOf(i)>=0?'<div class="clue-ok">'+CLUES[i]+'</div>':'<div class="clue-no">???</div>';
+  for(var i=0;i<CLUES.length;i++) html+=G.cluesFound.indexOf(i)>=0?'<div class="cok">'+CLUES[i]+'</div>':'<div class="cno">???</div>';
   html+='</div><p style="font-size:12px;font-weight:700;color:'+(G.cluesFound.length===CLUES.length?'#15803d':'#dc2626')+'">'+(G.cluesFound.length===CLUES.length?'✅ Tous les fragments récupérés !':'❌ '+G.cluesFound.length+'/'+CLUES.length+' fragments.')+'</p>';
   html+='<h2>📋 Détail des exercices</h2>';
   var logs=G.sessionLog;
   for(var li=0;li<logs.length;li++){
     var log=logs[li];
-    html+='<div class="ex-block"><div class="ex-head"><div><div class="ex-lv">Niveau '+log.levelId+'</div><div class="ex-name">'+log.exTitle+'</div></div>';
-    html+='<div><span class="tag '+(log.passed?'tp':'tf')+'">'+(log.passed?'✅ Réussi':'❌ Échoué')+'</span>'+(log.timerExpired?'<span class="tag tt">⏱ Timer</span>':'')+'</div></div>';
+    html+='<div class="eb"><div class="eh"><div><div class="el">Niveau '+log.levelId+'</div><div class="en">'+log.exTitle+'</div></div>';
+    html+='<div><span class="tg '+(log.passed?'tp':'tf')+'">'+(log.passed?'✅ Réussi':'❌ Échoué')+'</span>'+(log.timerExpired?'<span class="tg tt">⏱</span>':'')+'</div></div>';
     html+='<div class="sc">Score : <strong>'+log.score+'/'+log.total+'</strong> | Seuil : <strong>'+log.passScore+'/'+log.total+'</strong> | Points : <strong style="color:'+(log.passed?'#16a34a':'#dc2626')+'">'+(log.pts>0?'+':'')+log.pts+'</strong>'+(log.timerExpired?' | <strong style="color:#dc2626">-10 timer</strong>':'')+'</div>';
     for(var di=0;di<log.details.length;di++){
       var d=log.details[di];
@@ -975,18 +832,17 @@ function generatePDF(){
     }
     html+='</div>';
   }
-  html+='<div class="sum"><h2>📊 Récapitulatif</h2>';
+  html+='<div class="sm"><h2>📊 Récapitulatif</h2>';
   for(var si=0;si<logs.length;si++) html+='<div class="sr"><span>'+logs[si].exTitle+'</span><span>'+(logs[si].pts>0?'+':'')+logs[si].pts+' pts'+(logs[si].timerExpired?' (-10)':'')+'</span></div>';
-  html+='<div class="sr stot"><span>SCORE FINAL</span><span>'+G.score+' pts</span></div></div>';
-  html+='<div class="foot">Créé par C. Iemfre — Mission : Lockdown — CAP Agents de Sécurité</div>';
-  html+='</div></body></html>';
+  html+='<div class="sr st"><span>SCORE FINAL</span><span>'+G.score+' pts</span></div></div>';
+  html+='<div class="ft">Créé par C. Iemfre — Mission : Lockdown</div></div></body></html>';
   var w=window.open('','_blank');
   if(!w){ alert('Autorisez les popups pour générer le PDF.'); return; }
   w.document.write(html); w.document.close(); w.focus();
   setTimeout(function(){ w.print(); },800);
 }
 
-// ══ DATA ══
+/* ── DATA ── */
 var LEVELS=[
 {id:1,title:"Niveau 1 — Le Poste d'Accueil",intro:"Avant d'accéder au site, tous les agents doivent passer par le poste d'accueil. Prouvez que vous connaissez les bases du métier.",exercises:[
   {id:"1-1",type:"qcm",timer:420,passScore:8,instruction:"Answer the questions. You have 7 minutes.",title:"Security Knowledge Check — Exercise 1",questions:[
@@ -1078,21 +934,21 @@ var LEVELS=[
 ]},
 {id:5,title:"Niveau 5 — Le Bureau du Responsable",intro:"Secteur final. Trois fiches d'incident. Un agent tiré au sort fait un compte rendu oral devant le professeur. Pas de préparation. Pas de notes.",exercises:[
   {id:"5-1",type:"oral",timer:null,passScore:8,instruction:"Fiche n°1. Agent [tiré au sort], compte rendu devant le professeur.",title:"Oral Account — Incident Report #1",
-  situation:"SecuriPro — Incident Report\nSite: Logipro Warehouse — Gate B\nDate: Friday 19 April — 2:30 AM / Officer: S. Michel\n\nAt 2:30 AM, Gate B was found wide open. Tyre tracks led into the warehouse. Backup was called.\n\nThe loading bay had been broken into. Three pallets of equipment were missing. Two windows smashed. Tools suggested at least two people involved.\n\nCCTV cameras had been spray-painted. Police: called 2:45 AM, arrived 3:10 AM. Manager informed 3:15 AM. Gate secured.\n\nStatus: Under investigation — Case 2024/AR/0471",
+  situation:"SecuriPro — Incident Report\nSite: Logipro Warehouse — Gate B\nDate: Friday 19 April — 2:30 AM / Officer: S. Michel\n\nAt 2:30 AM, Gate B was found wide open. Tyre tracks led into the warehouse. Backup was called.\nThe loading bay had been broken into. Three pallets of equipment were missing. Two windows smashed. Tools suggested at least two people involved.\nCCTV cameras had been spray-painted. Police: called 2:45 AM, arrived 3:10 AM. Manager informed 3:15 AM. Gate secured.\nStatus: Under investigation — Case 2024/AR/0471",
   task:"Tell your supervisor what happened. Cover: what, when, what was found, what was done, current status.",
   assess:["Tous les faits essentiels sont couverts","Compte rendu clair et structuré","Vocabulaire professionnel utilisé","L'élève parle sans lire le texte"]},
   {id:"5-2",type:"oral",timer:null,passScore:7,instruction:"Compte rendu insuffisant. Fiche n°2. Agent [tiré au sort], devant le professeur.",title:"Oral Account — Incident Report #2",
-  situation:"SecuriPro — Incident Report\nSite: Beaumont Medical Centre — Reception\nDate: Tuesday 23 April — 11:05 AM / Officer: P. Nguyen\n\nAt 11:05 AM, a man demanded to see the manager, claiming unfair dismissal. He became aggressive and shouted at the receptionist.\n\nOfficer Nguyen stayed calm and asked the man to be quiet. The man refused. Backup called — second officer arrived in four minutes.\n\nThe man was escorted out and warned about a site ban. Details passed to HR. No violence occurred.\n\nStatus: Closed — individual banned from site",
+  situation:"SecuriPro — Incident Report\nSite: Beaumont Medical Centre — Reception\nDate: Tuesday 23 April — 11:05 AM / Officer: P. Nguyen\n\nAt 11:05 AM, a man demanded to see the manager, claiming unfair dismissal. He became aggressive and shouted at the receptionist.\nOfficer Nguyen stayed calm and asked the man to be quiet. The man refused. Backup called — second officer arrived in four minutes.\nThe man was escorted out and warned about a site ban. Details passed to HR. No violence occurred.\nStatus: Closed — individual banned from site",
   task:"Tell your supervisor what happened. Cover: what, when, what was found, what was done, current status.",
   assess:["Tous les faits essentiels sont couverts","Compte rendu clair et structuré","Vocabulaire professionnel utilisé","L'élève parle sans lire le texte"]},
   {id:"5-3",type:"oral",timer:null,passScore:7,instruction:"Dernière chance. Fiche n°3. Agent [tiré au sort], devant le professeur.",title:"Oral Account — Incident Report #3",
-  situation:"SecuriPro — Incident Report\nSite: Westpark Conference Centre — Car Park Level 2\nDate: Wednesday 24 April — 7:50 PM / Officer: A. Torres\n\nAt 7:50 PM, Officer Torres found a car with smashed windows. A bag and coat were visible inside. A briefcase had been forced open on the ground.\n\nOfficer Torres secured the area and found the owner — a conference delegate — at 8:05 PM.\n\nCCTV: man in dark hoodie at car 7:32 PM, leaving 7:36 PM. Footage handed to police, arrived 8:30 PM.\n\nStatus: Closed — CCTV passed to police",
+  situation:"SecuriPro — Incident Report\nSite: Westpark Conference Centre — Car Park Level 2\nDate: Wednesday 24 April — 7:50 PM / Officer: A. Torres\n\nAt 7:50 PM, Officer Torres found a car with smashed windows. A bag and coat were visible inside. A briefcase had been forced open on the ground.\nOfficer Torres secured the area and found the owner — a conference delegate — at 8:05 PM.\nCCTV: man in dark hoodie at car 7:32 PM, leaving 7:36 PM. Footage handed to police, arrived 8:30 PM.\nStatus: Closed — CCTV passed to police",
   task:"Tell your supervisor what happened. Cover: what, when, what was found, what was done, current status.",
   assess:["Tous les faits essentiels sont couverts","Compte rendu clair et structuré","Vocabulaire professionnel utilisé","L'élève parle sans lire le texte"]}
 ]}
 ];
 
-})(); // IIFE
+})();
 </script>
 </body>
 </html>
