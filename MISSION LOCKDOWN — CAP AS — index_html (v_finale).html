@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mission : Lockdown</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#e5e7eb;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,#d1d5db 39px,#d1d5db 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,#d1d5db 39px,#d1d5db 40px);color:#1e293b;min-height:100vh;padding-bottom:60px}
+.screen{display:none;min-height:100vh;padding:16px;justify-content:center;align-items:flex-start}
+.screen.active{display:flex}
+.centered{align-items:center}
+.card{background:#fff;border:1px solid #cbd5e1;border-radius:16px;padding:24px;margin-bottom:16px;width:100%;max-width:680px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card-sm{max-width:460px}
+h2{color:#1e293b;font-size:20px;margin-bottom:12px}
+.badge{color:#dc2626;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+input[type=text],input[type=number],input[type=password]{background:#f8fafc;border:1px solid #94a3b8;border-radius:8px;padding:10px 14px;color:#1e293b;font-size:15px;width:100%;margin-bottom:12px}
+input:focus{outline:2px solid #3b82f6}
+button{border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s}
+button:hover{opacity:.85}
+.btn-red{background:#dc2626;color:#fff}
+.btn-blue{background:#2563eb;color:#fff}
+.btn-green{background:#16a34a;color:#fff}
+.btn-gray{background:#94a3b8;color:#fff}
+.btn-outline{background:#fff;color:#475569;border:1px solid #cbd5e1;font-size:13px;padding:8px 16px}
+.flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.flex-col{display:flex;flex-direction:column;gap:8px}
+.clue-chip{border-radius:8px;padding:6px 14px;font-weight:700;font-size:13px;border:1px solid #cbd5e1;background:#f1f5f9;color:#94a3b8}
+.clue-chip.found{border-color:#16a34a;background:#dcfce7;color:#16a34a}
+.scorebar{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 14px;font-size:13px;color:#64748b;margin-bottom:12px}
+.scorebar span{color:#1e293b;font-weight:700}
+.timer-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.timer-val{font-size:20px;font-weight:700;min-width:52px}
+.timer-bar-bg{flex:1;height:6px;background:#e2e8f0;border-radius:3px}
+.timer-bar{height:100%;border-radius:3px;transition:width 1s linear,background .5s}
+.opt-btn{width:100%;text-align:left;padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#f8fafc;color:#1e293b;font-size:13px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt-btn:hover:not(.locked){border-color:#2563eb;background:#eff6ff}
+.opt-btn.selected{border-color:#2563eb;background:#dbeafe}
+.opt-btn.correct{border-color:#16a34a!important;background:#dcfce7!important}
+.opt-btn.wrong{border-color:#dc2626!important;background:#fee2e2!important}
+.opt-btn.locked{cursor:default}
+.tf-wrap{display:flex;gap:10px}
+.tf-btn{flex:1;padding:10px;border-radius:8px;border:2px solid #e2e8f0;background:#f8fafc;color:#1e293b;font-weight:700;font-size:14px;cursor:pointer;text-align:center}
+.tf-btn:hover:not(.locked){border-color:#2563eb}
+.tf-btn.selected{border-color:#2563eb;background:#dbeafe}
+.tf-btn.correct{border-color:#16a34a!important;background:#dcfce7!important}
+.tf-btn.wrong{border-color:#dc2626!important;background:#fee2e2!important}
+.report-block{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px;color:#475569;white-space:pre-line;line-height:1.7}
+.report-title{color:#b45309;font-weight:700;margin-bottom:8px}
+.result-pass{background:#dcfce7;border:1px solid #16a34a;border-radius:12px;padding:20px;margin-top:8px}
+.result-fail{background:#fee2e2;border:1px solid #dc2626;border-radius:12px;padding:20px;margin-top:8px}
+.clue-reveal{background:#dbeafe;border-radius:8px;padding:10px 14px;margin-top:10px;color:#1d4ed8;font-weight:700}
+.clue-reveal span{color:#b45309}
+.alert-warn{background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;color:#92400e;font-weight:700;margin-bottom:12px;font-size:13px}
+.oral-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;margin-bottom:16px;font-size:14px;color:#334155;line-height:1.7}
+.oral-label{color:#b45309;font-weight:700;margin-bottom:6px;font-size:13px}
+.oral-assess li{margin-left:18px;margin-bottom:4px;font-size:13px;color:#475569}
+.draw-badge{background:#ede9fe;border:1px solid #7c3aed;border-radius:10px;padding:12px 18px;color:#5b21b6;font-weight:700;font-size:15px;margin-bottom:12px}
+.final-win{background:#dcfce7;border:1px solid #16a34a;border-radius:16px;padding:28px;text-align:center;margin-top:16px}
+.final-fail{background:#fee2e2;border:1px solid #dc2626;border-radius:10px;padding:14px;text-align:center;margin-top:12px;color:#dc2626;font-weight:700}
+.id-row{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.id-row input{margin-bottom:0;width:70px;text-align:center;font-weight:700;text-transform:uppercase;font-size:15px}
+.id-sep{font-weight:700;color:#64748b;font-size:18px}
+.match-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.match-col-title{font-weight:700;font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:center}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.match-item{padding:10px 14px;border-radius:8px;border:2px solid #e2e8f0;background:#f8fafc;font-size:12px;color:#1e293b;cursor:pointer;line-height:1.4;min-height:44px;display:flex;align-items:center}
+.match-item:hover{border-color:#2563eb;background:#eff6ff}
+.match-item.selected{border-color:#7c3aed;background:#ede9fe;font-weight:700}
+.match-item.matched{border-color:#16a34a;background:#dcfce7;cursor:default}
+.match-item.matched-wrong{border-color:#dc2626;background:#fee2e2;cursor:default}
+.match-item.disabled{opacity:.5;cursor:default}
+.prof-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px}
+.prof-section h3{font-size:15px;color:#1e293b;margin-bottom:12px}
+.code-display{font-size:32px;font-weight:900;letter-spacing:8px;color:#dc2626;text-align:center;background:#fff;border:2px dashed #fca5a5;border-radius:10px;padding:14px;margin:8px 0}
+.tag-green{background:#dcfce7;color:#15803d;border-radius:6px;padding:2px 10px;font-size:12px;font-weight:700}
+.save-ok{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 14px;font-size:12px;color:#15803d;text-align:center;margin-top:8px}
+.save-found{background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:12px 14px;font-size:13px;color:#1d4ed8;margin-top:10px}
+/* ID input pair */
+.id-login{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.id-login input{width:64px;text-align:center;font-weight:800;font-size:18px;text-transform:uppercase;letter-spacing:3px;margin-bottom:0;padding:10px 6px}
+.id-login .sep{font-weight:900;font-size:22px;color:#64748b}
+/* HOME */
+#s-home{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#7f1d1d 100%);min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;font-size:160px;font-weight:900;color:rgba(255,255,255,.03);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.hero-badge{background:#dc2626;color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:20px;margin-bottom:16px;display:inline-block}
+.hero-title{font-size:38px;font-weight:900;color:#fff;text-align:center;line-height:1.1;margin-bottom:8px}
+.hero-title span{color:#ef4444}
+.hero-sub{color:#94a3b8;text-align:center;font-size:15px;margin-bottom:28px;line-height:1.6;max-width:420px}
+.hero-btn{background:#dc2626;color:#fff;font-size:17px;font-weight:800;padding:16px 40px;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(220,38,38,.4);letter-spacing:1px;display:block;width:100%;max-width:320px;margin:0 auto}
+.hero-btn-sec{background:transparent;color:#cbd5e1;font-size:13px;font-weight:600;padding:10px 24px;border-radius:8px;border:1px solid #475569;cursor:pointer;display:block;width:100%;max-width:320px;margin:10px auto 0}
+.hero-btn-sec:hover{background:#1e293b;opacity:1}
+.hero-btn-rgpd{background:transparent;color:#93c5fd;font-size:13px;font-weight:600;padding:10px 24px;border-radius:8px;border:1px solid #3b82f6;cursor:pointer;display:block;width:100%;max-width:320px;margin:10px auto 0}
+.hero-cards{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;max-width:480px}
+.hero-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;text-align:center;flex:1;min-width:90px}
+.hero-card .ic{font-size:24px;margin-bottom:4px}
+.hero-card .vl{color:#ef4444;font-size:20px;font-weight:800}
+.hero-card .lb{color:#e2e8f0;font-size:11px;font-weight:600}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.pulse{animation:pulse 2s infinite}
+#s-access{background:linear-gradient(135deg,#0f172a,#1e293b);flex-direction:column}
+.access-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px;max-width:380px;width:100%;text-align:center}
+.access-card h2{color:#fff;margin-bottom:6px}
+.access-card p{color:#94a3b8;font-size:13px;margin-bottom:20px}
+.access-card input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-align:center;font-size:26px;font-weight:800;letter-spacing:8px;border-radius:10px;padding:14px;margin-bottom:8px}
+.access-card input:focus{outline:2px solid #ef4444}
+.access-err{color:#fca5a5;font-size:13px;min-height:20px;margin-bottom:8px;font-weight:600}
+footer{position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#94a3b8;font-size:11px;text-align:center;padding:7px;z-index:200;border-top:1px solid #334155}
+footer a{color:#93c5fd;text-decoration:none}
+@media(max-width:500px){.match-container{grid-template-columns:1fr}.hero-title{font-size:28px}.id-row input{width:58px}}
+</style>
+</head>
+<body>
+<footer>Créé par <strong style="color:#f59e0b">C. Iemfre</strong> — Mission : Lockdown &nbsp;|&nbsp; <a href="#" id="lnk-rgpd">RGPD</a></footer>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="hero-bg">SECURIPRO</div>
+  <div style="text-align:center;z-index:1;max-width:520px;width:100%">
+    <div style="font-size:60px;margin-bottom:8px">🔴</div>
+    <div class="hero-badge pulse">SECURIPRO</div>
+    <h1 class="hero-title">MISSION :<br><span>LOCKDOWN</span></h1>
+    <p class="hero-sub">Une série d'incidents sur les sites SecuriPro. Ton équipe est appelée en renfort. 5 zones. 5 fragments. Le temps tourne.</p>
+    <div class="hero-cards">
+      <div class="hero-card"><div class="ic">🏆</div><div class="vl">5</div><div class="lb">Niveaux</div></div>
+      <div class="hero-card"><div class="ic">⚡</div><div class="vl">50</div><div class="lb">Pts/niveau</div></div>
+      <div class="hero-card"><div class="ic">🎲</div><div class="vl">IA</div><div class="lb">Tirage</div></div>
+      <div class="hero-card"><div class="ic">💾</div><div class="vl">✓</div><div class="lb">Sauvegarde</div></div>
+    </div>
+    <button class="hero-btn" id="btn-enter">ENTRER DANS LA MISSION</button>
+    <button class="hero-btn-sec" id="btn-go-prof">Espace professeur</button>
+    <button class="hero-btn-rgpd" id="btn-go-rgpd">🔒 Données personnelles & RGPD</button>
+  </div>
+</div>
+
+<!-- ACCESS -->
+<div id="s-access" class="screen centered">
+  <div class="access-card">
+    <div style="font-size:40px;margin-bottom:10px">🔐</div>
+    <h2>Code d'accès</h2>
+    <p>Entrez le code fourni par votre professeur.</p>
+    <input type="password" id="inp-access" maxlength="10" placeholder="• • • •"/>
+    <div class="access-err" id="access-err"></div>
+    <button class="hero-btn" id="btn-check-access">VALIDER</button>
+    <button class="hero-btn-sec" id="btn-access-back">← Retour</button>
+  </div>
+</div>
+
+<!-- PROF LOGIN -->
+<div id="s-prof-login" class="screen centered">
+  <div class="card card-sm" style="text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">🧑‍🏫</div>
+    <h2>Espace Professeur</h2>
+    <p style="color:#64748b;font-size:13px;margin-bottom:16px">Code professeur requis</p>
+    <input type="password" id="inp-prof" maxlength="6" placeholder="Code professeur"/>
+    <div style="color:#dc2626;font-size:13px;font-weight:600;min-height:18px;margin-bottom:8px" id="prof-err"></div>
+    <button class="btn-blue" id="btn-check-prof" style="width:100%">ACCÉDER</button>
+    <button class="btn-outline" id="btn-prof-back" style="width:100%;margin-top:8px">← Retour</button>
+  </div>
+</div>
+
+<!-- PROF SPACE -->
+<div id="s-prof" class="screen" style="flex-direction:column;align-items:center">
+  <div style="width:100%;max-width:600px">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+        <div><div class="badge">ESPACE PROFESSEUR</div><h2 style="margin-bottom:0">Tableau de bord</h2></div>
+        <button class="btn-outline" id="btn-prof-quit">← Quitter</button>
+      </div>
+      <div class="prof-section">
+        <h3>🔑 Code d'accès élève</h3>
+        <div class="code-display">CAPAS2627</div>
+        <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12px;color:#92400e;line-height:1.6">
+          ⚠️ Code par défaut : <strong>CAPAS2627</strong>. Pour modifier, ouvrez <code>index.html</code> et remplacez :<br>
+          <code style="background:#fff;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px">var STUDENT_CODE = "CAPAS2627";</code>
+        </div>
+        <div style="margin-top:10px;font-size:13px">Statut : <span class="tag-green">Code actif : CAPAS2627</span></div>
+      </div>
+      <div class="prof-section">
+        <h3>💾 Sauvegarde locale</h3>
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1d4ed8;line-height:1.7">
+          Les progressions sont sauvegardées <strong>directement sur l'appareil de chaque élève</strong> (localStorage), identifiées par leur code XX-XX.<br>
+          Elles ne sont pas accessibles depuis cet espace professeur. Chaque élève retrouve sa progression en ressaisissant son identifiant sur son propre appareil.
+        </div>
+      </div>
+      <div class="prof-section">
+        <h3>📋 Mission : Lockdown</h3>
+        <div style="font-size:13px;color:#475569;line-height:1.9">
+          <div>🔐 Code final : <strong style="color:#dc2626">AGENTS DE SÉCURITÉ EN ACTION</strong></div>
+          <div>🗺 N1 QCM · N2 Rapports · N3 Oral · N4 Match · N5 Compte rendu</div>
+          <div>📊 Réussi +50 pts · Échoué -10 pts · Timer -10 pts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RGPD -->
+<div id="s-rgpd" class="screen centered">
+  <div class="card card-sm">
+    <div class="badge" style="color:#2563eb">🔒 RGPD</div>
+    <h2>Protection des données personnelles</h2>
+    <p style="color:#475569;font-size:13px;margin-bottom:12px">Cette application est un outil pédagogique développé pour un usage en classe.</p>
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:18px;font-size:13px;color:#334155;line-height:1.8;margin-bottom:12px">
+      <div style="margin-bottom:10px">🔐 <strong>Aucune donnée transmise à un serveur externe.</strong></div>
+      <div style="margin-bottom:10px">💾 <strong>La progression est sauvegardée localement</strong> (localStorage) sur l'appareil de l'élève, identifiée par son code XX-XX. Elle peut être effacée en vidant le cache du navigateur.</div>
+      <div style="margin-bottom:10px">🚫 <strong>Aucun cookie tiers, aucun traceur, aucune API externe.</strong></div>
+      <div style="margin-bottom:10px">👤 Seules données saisies : 2 lettres prénom + 2 lettres nom (format XX-YY), et vos réponses aux exercices.</div>
+      <div>📄 Le PDF est créé localement dans votre navigateur et n'est envoyé à personne automatiquement.</div>
+    </div>
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;font-size:12px;color:#1d4ed8">
+      Responsable pédagogique : <strong>C. Iemfre</strong> — Usage non commercial et pédagogique.
+    </div>
+    <button class="btn-outline" id="btn-rgpd-back" style="margin-top:16px">← Retour</button>
+  </div>
+</div>
+
+<!-- LOGIN ELEVE -->
+<div id="s-login" class="screen centered">
+  <div class="card card-sm">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:40px">🛡️</div>
+      <div class="badge" style="margin-top:8px">IDENTIFICATION AGENT</div>
+      <h2 style="margin-top:4px">Qui êtes-vous ?</h2>
+      <p style="color:#64748b;font-size:13px">Entrez votre identifiant personnel : 2 premières lettres de votre prénom et 2 premières lettres de votre nom.</p>
+    </div>
+    <div style="text-align:center;margin-bottom:16px">
+      <div class="id-login" style="justify-content:center">
+        <input type="text" id="login-pre" maxlength="2" placeholder="CA" autocomplete="off"/>
+        <div class="sep">–</div>
+        <input type="text" id="login-nom" maxlength="2" placeholder="IE" autocomplete="off"/>
+      </div>
+      <p style="font-size:11px;color:#94a3b8;margin-top:4px">Ex : CA–IE pour Caroline Iemfre</p>
+    </div>
+    <div id="login-save-found" style="display:none" class="save-found">
+      💾 Une progression existe pour cet identifiant !<br>
+      <span id="login-save-detail" style="font-size:12px;display:block;margin-top:4px"></span>
+    </div>
+    <div style="font-size:13px;color:#64748b;margin:12px 0 6px;font-weight:600">Nom de votre équipe :</div>
+    <input type="text" id="inp-team" placeholder="Ex : Alpha" maxlength="40" autocomplete="off"/>
+    <button class="btn-red" id="btn-start-game" style="width:100%;margin-top:4px;font-size:16px;padding:13px">DÉMARRER →</button>
+  </div>
+</div>
+
+<!-- RESUME -->
+<div id="s-resume" class="screen centered">
+  <div class="card card-sm" style="text-align:center">
+    <div style="font-size:48px;margin-bottom:8px">💾</div>
+    <div class="badge" style="color:#16a34a">PROGRESSION TROUVÉE</div>
+    <h2 style="margin-top:6px">Reprendre la mission ?</h2>
+    <div id="resume-detail" style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px;margin:12px 0;font-size:13px;color:#15803d;text-align:left;line-height:2"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+      <button class="btn-green" id="btn-resume-yes" style="font-size:15px;padding:13px">▶ REPRENDRE LA MISSION</button>
+      <button class="btn-red" id="btn-resume-no">🔄 Recommencer depuis le début</button>
+      <button class="btn-outline" id="btn-resume-back">← Retour</button>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="s-intro" class="screen centered">
+  <div class="card card-sm">
+    <div class="badge">BRIEFING MISSION</div>
+    <h2>🎯 Mission : Lockdown</h2>
+    <p style="color:#475569;line-height:1.7;font-style:italic;margin-bottom:12px">Paris, lundi, 8h00. Une série d'incidents a été signalée sur plusieurs sites gardiennés par l'agence SecuriPro : caméras déconnectées, accès non autorisés, rapports manquants.</p>
+    <p style="color:#475569;line-height:1.7;font-style:italic;margin-bottom:12px">Votre équipe est appelée en renfort. Traversez cinq zones sécurisées et retrouvez les cinq fragments du code Lockdown.</p>
+    <p style="color:#b45309;font-weight:700;margin-bottom:16px">Soyez vigilants. L'agence compte sur vous.</p>
+    <div class="flex" id="clues-intro" style="margin-bottom:12px"></div>
+    <div class="scorebar">Score : <span id="score-intro">0</span> pts &nbsp;|&nbsp; Agent : <span id="agent-intro">—</span> &nbsp;|&nbsp; Équipe : <span id="team-intro">—</span></div>
+    <button class="btn-red" id="btn-go-level">ENTRER DANS LA ZONE →</button>
+  </div>
+</div>
+
+<!-- LEVEL -->
+<div id="s-level" class="screen centered">
+  <div class="card card-sm">
+    <div class="badge" id="lv-badge">ZONE 1 / 5</div>
+    <h2 id="lv-title"></h2>
+    <p id="lv-intro" style="color:#64748b;line-height:1.7;font-style:italic;margin-bottom:16px"></p>
+    <div class="scorebar">Score : <span id="score-lv">0</span> pts</div>
+    <button class="btn-blue" id="btn-start-ex">COMMENCER L'EXERCICE →</button>
+  </div>
+</div>
+
+<!-- EXERCISE -->
+<div id="s-exercise" class="screen" style="flex-direction:column;align-items:center">
+  <div style="width:100%;max-width:720px">
+    <div class="card" style="padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div><div class="badge" id="ex-badge"></div><div style="font-weight:700;font-size:15px" id="ex-title"></div></div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn-green" id="btn-pdf-ex" style="font-size:12px;padding:6px 12px">📄 PDF</button>
+          <span style="color:#b45309;font-weight:700">Score : <span id="score-ex">0</span> pts</span>
+        </div>
+      </div>
+      <p style="color:#64748b;font-style:italic;font-size:13px;margin-top:8px" id="ex-instr"></p>
+    </div>
+    <div id="timer-wrap" class="timer-wrap" style="display:none">
+      <span>⏱</span><span class="timer-val" id="timer-val">0:00</span>
+      <div class="timer-bar-bg"><div class="timer-bar" id="timer-bar" style="width:100%;background:#16a34a"></div></div>
+    </div>
+    <div id="alert-timer" class="alert-warn" style="display:none">⚠ Temps écoulé ! Pénalité : -10 points</div>
+    <div id="report-area"></div>
+    <div id="questions-area"></div>
+    <div id="match-area"></div>
+    <div id="oral-area"></div>
+    <div style="margin-top:8px"><button class="btn-gray" id="btn-submit">VALIDER LES RÉPONSES</button></div>
+    <div id="result-area" style="margin-top:16px"></div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div id="s-final" class="screen centered">
+  <div class="card card-sm" style="text-align:center">
+    <div style="font-size:48px">🔐</div>
+    <h2 style="color:#dc2626;margin-top:8px">CODE FINAL</h2>
+    <p style="color:#64748b;margin-bottom:16px">Tous les fragments récupérés. Entrez le code pour sécuriser le système.</p>
+    <div class="flex" id="clues-final" style="justify-content:center;margin-bottom:20px"></div>
+    <div class="scorebar" style="text-align:left">Score final : <span id="score-final">0</span> pts</div>
+    <input type="text" id="inp-final" placeholder="Entrez le code..." style="text-align:center;font-size:16px;letter-spacing:2px"/>
+    <button class="btn-red" id="btn-check-final" style="width:100%;margin-top:4px">VALIDER LE CODE</button>
+    <div id="final-result"></div>
+    <div style="margin-top:12px">
+      <button class="btn-green" id="btn-pdf-final" style="width:100%;font-size:15px;padding:13px">📄 TÉLÉCHARGER LE RAPPORT PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+var STUDENT_CODE = "CAPAS2627";
+var PROF_CODE    = "0504";
+var SAVE_PREFIX  = "lockdown_v2_";
+var CLUES        = ["AGENTS","DE","SÉCURITÉ","EN","ACTION !"];
+var FINAL_CODE   = "AGENTS DE SÉCURITÉ EN ACTION";
+
+var G = {
+  agentId:"", team:"", score:0, cluesFound:[],
+  levelIdx:0, exIdx:0, answers:{}, submitted:false,
+  timerExpired:false, timerInt:null, timerLeft:0, timerTotal:0,
+  drawnAgent:"", matchSel:null, matchPairs:{}, sessionLog:[]
+};
+
+/* ── STORAGE ── */
+function storageOk(){
+  try{ localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true; }catch(e){ return false; }
+}
+function saveKey(id){ return SAVE_PREFIX + id.toUpperCase().replace(/[^A-Z0-9\-]/g,''); }
+
+function save(){
+  if(!G.agentId || !storageOk()) return;
+  try{
+    localStorage.setItem(saveKey(G.agentId), JSON.stringify({
+      v:2, agentId:G.agentId, team:G.team,
+      score:G.score, cluesFound:G.cluesFound,
+      levelIdx:G.levelIdx, exIdx:G.exIdx,
+      sessionLog:G.sessionLog,
+      savedAt:new Date().toLocaleString('fr-FR')
+    }));
+  }catch(e){}
+}
+function loadSave(id){
+  if(!id||!storageOk()) return null;
+  try{
+    var r=localStorage.getItem(saveKey(id));
+    if(!r) return null;
+    var d=JSON.parse(r);
+    return (d&&d.v===2)?d:null;
+  }catch(e){ return null; }
+}
+function deleteSave(id){
+  if(!storageOk()) return;
+  try{ localStorage.removeItem(saveKey(id)); }catch(e){}
+}
+function allSaves(){
+  var list=[];
+  if(!storageOk()) return list;
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(SAVE_PREFIX)===0){
+        try{ var d=JSON.parse(localStorage.getItem(k)); if(d&&d.v===2) list.push(d); }catch(e){}
+      }
+    }
+  }catch(e){}
+  return list;
+}
+
+/* ── HELPERS ── */
+function el(id){ return document.getElementById(id); }
+function show(id){
+  var ss=document.querySelectorAll('.screen');
+  for(var i=0;i<ss.length;i++) ss[i].classList.remove('active');
+  var s=el(id); if(s) s.classList.add('active');
+  window.scrollTo(0,0);
+}
+function norm(s){
+  return (s||'').trim().toUpperCase()
+    .replace(/[\xC9\xC8\xCA\xCB]/g,'E').replace(/[\xC0\xC2\xC4]/g,'A')
+    .replace(/[\xD9\xDB\xDC]/g,'U').replace(/[\xCE\xCF\xCC]/g,'I')
+    .replace(/[\xD4\xD6]/g,'O').replace(/\xC7/g,'C');
+}
+function shuffle(a){
+  var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}
+  return b;
+}
+function renderClues(cid){
+  var c=el(cid); if(!c) return; c.innerHTML='';
+  for(var i=0;i<CLUES.length;i++){
+    var d=document.createElement('div');
+    var f=G.cluesFound.indexOf(i)>=0;
+    d.className='clue-chip'+(f?' found':'');
+    d.textContent=f?CLUES[i]:'???';
+    c.appendChild(d);
+  }
+}
+function unlockClue(lvId){ var idx=lvId-1; if(G.cluesFound.indexOf(idx)<0) G.cluesFound.push(idx); }
+function drawAgent(){ return G.agentId||"Agent"; }
+function wire(id,fn){ var b=el(id); if(b) b.addEventListener('click',fn); }
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',function(){
+
+  wire('btn-enter',function(){ el('inp-access').value=''; el('access-err').textContent=''; show('s-access'); });
+  wire('btn-go-prof',function(){ el('inp-prof').value=''; el('prof-err').textContent=''; show('s-prof-login'); });
+  wire('btn-go-rgpd',function(){ show('s-rgpd'); });
+  wire('lnk-rgpd',function(e){ e.preventDefault(); show('s-rgpd'); });
+  wire('btn-rgpd-back',function(){ show('s-home'); });
+  wire('btn-access-back',function(){ show('s-home'); });
+  wire('btn-prof-back',function(){ show('s-home'); });
+  wire('btn-prof-quit',function(){ show('s-home'); });
+  wire('btn-check-access',checkAccess);
+  wire('btn-check-prof',checkProf);
+  wire('btn-start-game',handleLogin);
+  wire('btn-resume-yes',doResume);
+  wire('btn-resume-no',function(){ deleteSave(G.agentId); startFresh(); });
+  wire('btn-resume-back',function(){ show('s-login'); });
+  wire('btn-go-level',goToLevel);
+  wire('btn-start-ex',startExercise);
+  wire('btn-submit',submitExercise);
+  wire('btn-check-final',checkFinal);
+  wire('btn-pdf-ex',generatePDF);
+  wire('btn-pdf-final',generatePDF);
+
+  var ia=el('inp-access'); if(ia) ia.addEventListener('keydown',function(e){ if(e.key==='Enter') checkAccess(); });
+  var ip=el('inp-prof');   if(ip) ip.addEventListener('keydown',function(e){ if(e.key==='Enter') checkProf(); });
+
+  // Détection sauvegarde en temps réel sur les champs identifiant
+  function checkIdSave(){
+    var pre=(el('login-pre').value||'').trim().toUpperCase();
+    var nom=(el('login-nom').value||'').trim().toUpperCase();
+    var box=el('login-save-found'), det=el('login-save-detail');
+    if(pre.length===2&&nom.length===2){
+      var id=pre+'-'+nom;
+      var saved=loadSave(id);
+      if(saved){
+        box.style.display='block';
+        det.textContent='N'+(saved.levelIdx+1)+' · Ex'+(saved.exIdx+1)+' · Score : '+saved.score+' pts · '+saved.savedAt;
+      } else { box.style.display='none'; }
+    } else { box.style.display='none'; }
+  }
+  var lp=el('login-pre'), ln=el('login-nom');
+  if(lp){ lp.addEventListener('input',function(){ this.value=this.value.toUpperCase(); checkIdSave(); }); }
+  if(ln){ ln.addEventListener('input',function(){ this.value=this.value.toUpperCase(); checkIdSave(); }); }
+});
+
+/* ── ACCESS ── */
+function checkAccess(){
+  var v=(el('inp-access').value||'').trim().toUpperCase();
+  if(v===STUDENT_CODE){ el('access-err').textContent=''; el('inp-access').value=''; show('s-login'); }
+  else el('access-err').textContent='Code incorrect.';
+}
+
+/* ── PROF ── */
+function checkProf(){
+  if((el('inp-prof').value||'')===PROF_CODE){
+    el('prof-err').textContent=''; renderProfSaves(); show('s-prof');
+  } else el('prof-err').textContent='Code incorrect.';
+}
+function renderProfSaves(){
+  var box=el('prof-saves'); if(!box) return;
+  var saves=allSaves();
+  if(!saves.length){ box.innerHTML='<em style="color:#94a3b8">Aucune progression sauvegardée sur cet appareil.</em>'; return; }
+  var html='';
+  for(var i=0;i<saves.length;i++){
+    var d=saves[i];
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;margin-bottom:6px">';
+    html+='<div><strong style="color:#dc2626">'+d.agentId+'</strong> &nbsp;|&nbsp; Équipe : '+d.team+'<br>';
+    html+='<span style="font-size:11px;color:#64748b">N'+(d.levelIdx+1)+' Ex'+(d.exIdx+1)+' · '+d.score+' pts · '+d.savedAt+'</span></div>';
+    html+='<button onclick="deleteSaveProf(\''+encodeURIComponent(d.agentId)+'\')" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer">Supprimer</button>';
+    html+='</div>';
+  }
+  box.innerHTML=html;
+}
+window.deleteSaveProf=function(enc){
+  var id=decodeURIComponent(enc);
+  if(confirm('Supprimer la progression de l\'agent "'+id+'" ?')){ deleteSave(id); renderProfSaves(); }
+};
+
+/* ── LOGIN ── */
+function handleLogin(){
+  var pre=(el('login-pre').value||'').trim().toUpperCase();
+  var nom=(el('login-nom').value||'').trim().toUpperCase();
+  var team=(el('inp-team').value||'').trim();
+  if(pre.length!==2||nom.length!==2){ alert('Entrez 2 lettres pour le prénom et 2 lettres pour le nom.'); return; }
+  if(!team){ alert('Entrez le nom de votre équipe.'); return; }
+  G.agentId=pre+'-'+nom; G.team=team;
+  var saved=loadSave(G.agentId);
+  if(saved){
+    var lv=LEVELS[saved.levelIdx];
+    var ex=lv?lv.exercises[saved.exIdx]:null;
+    var html='';
+    html+='<div>🆔 Agent : <strong>'+saved.agentId+'</strong></div>';
+    html+='<div>👥 Équipe : <strong>'+saved.team+'</strong></div>';
+    html+='<div>📍 Niveau '+(saved.levelIdx+1)+' — Exercice '+(saved.exIdx+1)+'</div>';
+    if(ex) html+='<div>📝 '+ex.title+'</div>';
+    html+='<div>🏆 Score : <strong>'+saved.score+' pts</strong></div>';
+    html+='<div>🔓 Fragments : '+saved.cluesFound.length+' / '+CLUES.length+'</div>';
+    html+='<div>💾 Sauvegardé le : '+saved.savedAt+'</div>';
+    el('resume-detail').innerHTML=html;
+    show('s-resume');
+  } else { startFresh(); }
+}
+
+function startFresh(){
+  G.score=0; G.cluesFound=[]; G.levelIdx=0; G.exIdx=0; G.sessionLog=[];
+  el('score-intro').textContent=G.score;
+  el('agent-intro').textContent=G.agentId;
+  el('team-intro').textContent=G.team;
+  renderClues('clues-intro');
+  show('s-intro');
+}
+
+function doResume(){
+  var saved=loadSave(G.agentId);
+  if(!saved){ startFresh(); return; }
+  G.score=saved.score||0;
+  G.cluesFound=saved.cluesFound||[];
+  G.levelIdx=saved.levelIdx||0;
+  G.exIdx=saved.exIdx||0;
+  G.sessionLog=saved.sessionLog||[];
+  if(saved.team) G.team=saved.team;
+  goToLevel();
+}
+
+/* ── TIMER ── */
+function startTimer(sec){
+  G.timerLeft=sec; G.timerTotal=sec; G.timerExpired=false;
+  el('timer-wrap').style.display='flex'; updTimer();
+  G.timerInt=setInterval(function(){
+    G.timerLeft--; updTimer();
+    if(G.timerLeft<=0){ clearInterval(G.timerInt); G.timerInt=null; G.timerExpired=true; G.score-=10; el('alert-timer').style.display='block'; }
+  },1000);
+}
+function stopTimer(){ if(G.timerInt){ clearInterval(G.timerInt); G.timerInt=null; } }
+function updTimer(){
+  var m=Math.floor(G.timerLeft/60),s=G.timerLeft%60;
+  el('timer-val').textContent=m+':'+(s<10?'0':'')+s;
+  var pct=G.timerLeft/G.timerTotal;
+  var col=pct>0.5?'#16a34a':pct>0.25?'#d97706':'#dc2626';
+  el('timer-bar').style.width=(pct*100)+'%'; el('timer-bar').style.background=col; el('timer-val').style.color=col;
+}
+
+/* ── FLOW ── */
+function goToLevel(){
+  var lv=LEVELS[G.levelIdx];
+  el('lv-badge').textContent='ZONE '+(G.levelIdx+1)+' / '+LEVELS.length;
+  el('lv-title').textContent=lv.title; el('lv-intro').textContent=lv.intro; el('score-lv').textContent=G.score;
+  show('s-level');
+}
+function startExercise(){
+  var lv=LEVELS[G.levelIdx], ex=lv.exercises[G.exIdx];
+  G.answers={}; G.submitted=false; G.timerExpired=false; G.matchSel=null; G.matchPairs={};
+  G.drawnAgent=drawAgent(); stopTimer();
+  ['timer-wrap','alert-timer'].forEach(function(id){ el(id).style.display='none'; });
+  ['result-area','report-area','questions-area','match-area','oral-area'].forEach(function(id){ el(id).innerHTML=''; });
+  el('btn-submit').style.display=''; el('btn-submit').className='btn-gray';
+  el('ex-badge').textContent='NIVEAU '+lv.id+' — EXERCICE '+(G.exIdx+1);
+  el('ex-title').textContent=ex.title;
+  el('ex-instr').textContent=ex.instruction.replace('[tiré au sort]',G.drawnAgent);
+  el('score-ex').textContent=G.score; show('s-exercise');
+  if(ex.timer) startTimer(ex.timer);
+  if(ex.report) el('report-area').innerHTML='<div class="report-block"><div class="report-title">📄 Incident Report</div>'+ex.report.replace(/\n/g,'<br>')+'</div>';
+  if(ex.type==='qcm') renderQCM(ex);
+  else if(ex.type==='truefalse') renderTF(ex);
+  else if(ex.type==='match') renderMatch(ex);
+  else if(ex.type==='oral') renderOral(ex);
+}
+
+/* ── RENDER ── */
+function renderQCM(ex){
+  var h='',i,j;
+  for(i=0;i<ex.questions.length;i++){
+    var q=ex.questions[i];
+    h+='<div class="card" style="margin-bottom:10px"><div style="font-weight:600;font-size:14px;margin-bottom:10px">'+(i+1)+'. '+q.q+'</div><div class="flex-col">';
+    for(j=0;j<q.opts.length;j++) h+='<button class="opt-btn" id="opt-'+i+'-'+j+'" data-qi="'+i+'" data-j="'+j+'">'+String.fromCharCode(65+j)+') '+q.opts[j]+'</button>';
+    h+='</div></div>';
+  }
+  el('questions-area').innerHTML=h;
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var k=0;k<btns.length;k++) (function(b){ b.addEventListener('click',function(){ selectOpt(+b.dataset.qi,+b.dataset.j,ex); }); })(btns[k]);
+}
+function renderTF(ex){
+  var h='',i;
+  for(i=0;i<ex.questions.length;i++){
+    var q=ex.questions[i];
+    h+='<div class="card" style="margin-bottom:10px"><div style="font-weight:600;font-size:14px;margin-bottom:10px">'+(i+1)+'. '+q.q+'</div>';
+    h+='<div class="tf-wrap"><button class="tf-btn" id="tf-'+i+'-true" data-qi="'+i+'" data-v="true">TRUE ✓</button><button class="tf-btn" id="tf-'+i+'-false" data-qi="'+i+'" data-v="false">FALSE ✗</button></div></div>';
+  }
+  el('questions-area').innerHTML=h;
+  var btns=document.querySelectorAll('.tf-btn');
+  for(var k=0;k<btns.length;k++) (function(b){ b.addEventListener('click',function(){ selectTF(+b.dataset.qi,b.dataset.v==='true',ex); }); })(btns[k]);
+}
+function renderMatch(ex){
+  var i, terms=shuffle(ex.pairs.map(function(_,i){return i;})), defs=shuffle(ex.pairs.map(function(_,i){return i;}));
+  var h='<div style="font-size:12px;color:#64748b;margin-bottom:10px">🟣 Sélectionné &nbsp; 🟢 Correct &nbsp; 🔴 Incorrect</div><div class="match-container">';
+  h+='<div><div class="match-col-title">Termes</div><div class="match-col">';
+  for(i=0;i<terms.length;i++) h+='<div class="match-item" id="mt-'+terms[i]+'" data-idx="'+terms[i]+'">'+ex.pairs[terms[i]].term+'</div>';
+  h+='</div></div><div><div class="match-col-title">Définitions</div><div class="match-col">';
+  for(i=0;i<defs.length;i++) h+='<div class="match-item" id="md-'+defs[i]+'" data-idx="'+defs[i]+'">'+ex.pairs[defs[i]].def+'</div>';
+  h+='</div></div></div><div id="match-prog" style="font-size:13px;color:#64748b;margin-bottom:8px;text-align:center">0 / '+ex.pairs.length+' associations faites</div>';
+  el('match-area').innerHTML=h;
+  var mts=document.querySelectorAll('[id^="mt-"]'), mds=document.querySelectorAll('[id^="md-"]');
+  for(i=0;i<mts.length;i++) (function(b){ b.addEventListener('click',function(){ clickTerm(+b.dataset.idx,ex); }); })(mts[i]);
+  for(i=0;i<mds.length;i++) (function(b){ b.addEventListener('click',function(){ clickDef(+b.dataset.idx,ex); }); })(mds[i]);
+  updMatchBtn(ex);
+}
+function clickTerm(idx,ex){
+  if(G.submitted) return;
+  if(Object.keys(G.matchPairs).map(Number).indexOf(idx)>=0) return;
+  if(G.matchSel&&G.matchSel.type==='term'&&G.matchSel.idx===idx){ el('mt-'+idx).classList.remove('selected'); G.matchSel=null; return; }
+  if(G.matchSel&&G.matchSel.type==='def'){ makePair(idx,G.matchSel.idx,ex); return; }
+  var ms=document.querySelectorAll('[id^="mt-"]'); for(var i=0;i<ms.length;i++) ms[i].classList.remove('selected');
+  el('mt-'+idx).classList.add('selected'); G.matchSel={type:'term',idx:idx};
+}
+function clickDef(idx,ex){
+  if(G.submitted) return;
+  if(Object.values(G.matchPairs).map(Number).indexOf(idx)>=0) return;
+  if(G.matchSel&&G.matchSel.type==='def'&&G.matchSel.idx===idx){ el('md-'+idx).classList.remove('selected'); G.matchSel=null; return; }
+  if(G.matchSel&&G.matchSel.type==='term'){ makePair(G.matchSel.idx,idx,ex); return; }
+  var ms=document.querySelectorAll('[id^="md-"]'); for(var i=0;i<ms.length;i++) ms[i].classList.remove('selected');
+  el('md-'+idx).classList.add('selected'); G.matchSel={type:'def',idx:idx};
+}
+function makePair(ti,di,ex){
+  G.matchPairs[ti]=di;
+  el('mt-'+ti).classList.remove('selected'); el('mt-'+ti).classList.add('matched');
+  el('md-'+di).classList.remove('selected'); el('md-'+di).classList.add('matched');
+  G.matchSel=null;
+  el('match-prog').textContent=Object.keys(G.matchPairs).length+' / '+ex.pairs.length+' associations faites';
+  updMatchBtn(ex);
+}
+function updMatchBtn(ex){ el('btn-submit').className=Object.keys(G.matchPairs).length>=ex.pairs.length?'btn-green':'btn-gray'; }
+
+function renderOral(ex){
+  el('btn-submit').style.display='none';
+  var h='<div class="draw-badge">🎲 Agent désigné : <strong>'+G.drawnAgent+'</strong></div>';
+  h+='<div class="oral-card" style="background:#fff7ed;border-color:#f97316"><div class="oral-label" style="color:#c2410c">📢 Présentation devant le professeur</div>L\'agent désigné se lève et présente oralement la situation devant le professeur, sans notes ni préparation.</div>';
+  h+='<div class="oral-card"><div class="oral-label">📋 Situation</div>'+ex.situation.replace(/\n/g,'<br>')+'</div>';
+  h+='<div class="oral-card"><div class="oral-label">🎯 Your task</div>'+ex.task+'</div>';
+  h+='<div class="oral-card"><div class="oral-label">📊 Critères</div><ul class="oral-assess">';
+  for(var i=0;i<ex.assess.length;i++) h+='<li>'+ex.assess[i]+'</li>';
+  h+='</ul><p style="color:#dc2626;font-size:12px;font-style:italic;margin-top:10px">⏱ Pas de préparation. Pas de notes. Ne pas lire le texte.</p></div>';
+  h+='<div class="card"><div style="font-weight:700;margin-bottom:8px">Code du professeur (1–10) :</div><input type="number" id="oral-code" min="1" max="10" style="width:90px;text-align:center;font-size:22px;font-weight:700;margin-bottom:0"/><button class="btn-blue" id="btn-oral-val" style="margin-left:10px">VALIDER</button></div>';
+  el('oral-area').innerHTML=h;
+  el('btn-oral-val').addEventListener('click',submitOral);
+}
+
+/* ── INTERACTIONS ── */
+function selectOpt(qi,j,ex){
+  if(G.submitted) return;
+  var bs=document.querySelectorAll('[id^="opt-'+qi+'-"]'); for(var k=0;k<bs.length;k++) bs[k].classList.remove('selected');
+  el('opt-'+qi+'-'+j).classList.add('selected'); G.answers[qi]=j;
+  el('btn-submit').className=Object.keys(G.answers).length>=ex.questions.length?'btn-green':'btn-gray';
+}
+function selectTF(qi,val,ex){
+  if(G.submitted) return;
+  el('tf-'+qi+'-true').classList.remove('selected'); el('tf-'+qi+'-false').classList.remove('selected');
+  el('tf-'+qi+'-'+(val?'true':'false')).classList.add('selected'); G.answers[qi]=val;
+  el('btn-submit').className=Object.keys(G.answers).length>=ex.questions.length?'btn-green':'btn-gray';
+}
+
+/* ── SUBMIT ── */
+function submitExercise(){
+  var lv=LEVELS[G.levelIdx], ex=lv.exercises[G.exIdx];
+  if(ex.type==='oral') return;
+  if(ex.type==='match'){ submitMatch(ex); return; }
+  if(Object.keys(G.answers).length<ex.questions.length){ alert('Répondez à toutes les questions.'); return; }
+  stopTimer(); G.submitted=true;
+  var correct=0, details=[], i, j, sel, ok, b;
+  if(ex.type==='qcm'){
+    for(i=0;i<ex.questions.length;i++){
+      var q=ex.questions[i]; sel=G.answers[i]; ok=(sel===q.ans);
+      for(j=0;j<q.opts.length;j++){ b=el('opt-'+i+'-'+j); if(!b) continue; b.classList.add('locked'); if(j===q.ans) b.classList.add('correct'); else if(j===sel) b.classList.add('wrong'); }
+      if(ok) correct++;
+      details.push({question:q.q, userAns:q.opts[sel]!==undefined?q.opts[sel]:'—', correctAns:q.opts[q.ans], isCorrect:ok, correction:''});
+    }
+  } else {
+    for(i=0;i<ex.questions.length;i++){
+      var q2=ex.questions[i]; sel=G.answers[i]; ok=(sel===q2.ans);
+      var vv=[true,false];
+      for(j=0;j<vv.length;j++){ b=el('tf-'+i+'-'+vv[j]); if(!b) continue; b.classList.add('locked'); if(vv[j]===q2.ans) b.classList.add('correct'); else if(vv[j]===sel) b.classList.add('wrong'); }
+      if(ok) correct++;
+      details.push({question:q2.q, userAns:sel, correctAns:q2.ans, isCorrect:ok, correction:q2.correction||''});
+    }
+  }
+  finalizeEx(ex, correct, ex.questions.length, details, '');
+}
+function submitMatch(ex){
+  stopTimer(); G.submitted=true;
+  var items=document.querySelectorAll('.match-item'); for(var k=0;k<items.length;k++) items[k].classList.add('disabled');
+  var correct=0, wrongHtml='', details=[], keys=Object.keys(G.matchPairs);
+  for(var i=0;i<keys.length;i++){
+    var t=+keys[i], d=+G.matchPairs[keys[i]], ok=(t===d);
+    var te=el('mt-'+t), de=el('md-'+d);
+    if(te){ te.classList.remove('matched'); te.classList.add(ok?'matched':'matched-wrong'); }
+    if(de){ de.classList.remove('matched'); de.classList.add(ok?'matched':'matched-wrong'); }
+    if(ok) correct++;
+    else wrongHtml+='<div style="margin-bottom:4px">❌ <strong>'+ex.pairs[t].term+'</strong> → '+ex.pairs[t].def+'</div>';
+    details.push({question:ex.pairs[t].term, userAns:ex.pairs[d].def, correctAns:ex.pairs[t].def, isCorrect:ok, correction:''});
+  }
+  el('match-prog').textContent=correct+' / '+ex.pairs.length+' bonnes associations';
+  finalizeEx(ex, correct, ex.pairs.length, details, wrongHtml);
+}
+function submitOral(){
+  var code=parseInt((el('oral-code').value||'0'));
+  if(!code||code<1||code>10){ alert('Entrez un code entre 1 et 10.'); return; }
+  var lv=LEVELS[G.levelIdx], ex=lv.exercises[G.exIdx];
+  var passed=code>=ex.passScore, pts=passed?50:-10;
+  G.score+=pts; el('score-ex').textContent=G.score;
+  if(passed) unlockClue(lv.id);
+  G.sessionLog.push({levelId:lv.id,levelTitle:lv.title,exTitle:ex.title,exType:'oral',score:code,total:10,passed:passed,pts:pts,timerExpired:false,passScore:ex.passScore,details:[{question:'Présentation orale',userAns:code+'/10',correctAns:ex.passScore+'/10 requis',isCorrect:passed,correction:''}]});
+  save(); showResult(code,10,passed,ex,pts,'');
+}
+function finalizeEx(ex,correct,total,details,wrongHtml){
+  var lv=LEVELS[G.levelIdx];
+  var passed=correct>=ex.passScore, pts=passed?50:-10;
+  G.score+=pts; el('score-ex').textContent=G.score;
+  if(passed) unlockClue(lv.id);
+  if(!wrongHtml&&!passed&&ex.type==='truefalse'){
+    for(var i=0;i<details.length;i++) if(!details[i].isCorrect&&details[i].correction) wrongHtml+='<div style="margin-bottom:4px">❌ Q'+(i+1)+': '+details[i].correction+'</div>';
+  }
+  G.sessionLog.push({levelId:lv.id,levelTitle:lv.title,exTitle:ex.title,exType:ex.type,score:correct,total:total,passed:passed,pts:pts,timerExpired:G.timerExpired,passScore:ex.passScore,details:details});
+  save(); el('btn-submit').style.display='none';
+  showResult(correct,total,passed,ex,pts,wrongHtml);
+}
+function showResult(score,total,passed,ex,pts,extra){
+  var lv=LEVELS[G.levelIdx];
+  var h='<div class="'+(passed?'result-pass':'result-fail')+'">';
+  h+='<div style="font-size:18px;font-weight:700;margin-bottom:6px;color:'+(passed?'#15803d':'#dc2626')+'">'+(passed?'✅ Exercice réussi !':'❌ Score insuffisant')+'</div>';
+  h+='<div style="margin-bottom:4px">Score : '+score+' / '+total+'</div>';
+  h+='<div style="color:'+(passed?'#15803d':'#dc2626')+';margin-bottom:8px">'+(pts>0?'+':'')+pts+' points'+(G.timerExpired?' — Pénalité timer : -10 pts':'')+'</div>';
+  if(passed) h+='<div class="clue-reveal">🔓 Fragment récupéré : <span>'+CLUES[lv.id-1]+'</span></div>';
+  if(extra) h+='<div style="margin-top:10px;font-size:12px;color:#64748b">'+extra+'</div>';
+  h+='<div class="save-ok">💾 Progression sauvegardée — identifiant '+G.agentId+'</div>';
+  var isLastEx=G.exIdx>=lv.exercises.length-1, isLastLv=G.levelIdx>=LEVELS.length-1;
+  var lbl=passed?(isLastLv?'TERMINER LA MISSION':'NIVEAU SUIVANT →'):(isLastEx?(isLastLv?'TERMINER LA MISSION':'NIVEAU SUIVANT →'):'EXERCICE SUIVANT →');
+  h+='<button class="btn-blue btn-nxt" style="margin-top:12px">'+lbl+'</button></div>';
+  el('result-area').innerHTML=h;
+  el('result-area').querySelector('.btn-nxt').addEventListener('click',function(){ nextStep(passed); });
+}
+function nextStep(passed){
+  var lv=LEVELS[G.levelIdx];
+  if(passed||G.exIdx>=lv.exercises.length-1){
+    unlockClue(lv.id);
+    if(G.levelIdx>=LEVELS.length-1){ deleteSave(G.agentId); renderClues('clues-final'); el('score-final').textContent=G.score; show('s-final'); return; }
+    G.levelIdx++; G.exIdx=0;
+  } else { G.exIdx++; }
+  save(); goToLevel();
+}
+function checkFinal(){
+  var ok=norm(el('inp-final').value)===norm(FINAL_CODE);
+  el('final-result').innerHTML=ok?
+    '<div class="final-win"><div style="font-size:40px">🎉</div><div style="color:#15803d;font-weight:700;font-size:22px;margin-top:8px">MISSION ACCOMPLIE !</div><div style="margin-top:4px">FÉLICITATIONS, AGENTS !</div><div style="color:#b45309;font-weight:700;margin-top:8px">Score final : '+G.score+' points</div></div>':
+    '<div class="final-fail">❌ Code incorrect. Vérifiez vos fragments.</div>';
+}
+
+/* ── PDF ── */
+function generatePDF(){
+  var date=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Bilan '+G.agentId+'</title><style>';
+  html+='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:12px;color:#1e293b}';
+  html+='.hd{background:#0f172a;color:#fff;padding:20px 32px}.hd h1{color:#ef4444;font-size:22px;margin-bottom:4px}.hd p{color:#94a3b8;font-size:11px}';
+  html+='.bd{max-width:800px;margin:0 auto;padding:24px}h2{font-size:15px;border-bottom:2px solid #e2e8f0;padding-bottom:4px;margin:20px 0 10px}';
+  html+='.meta{display:flex;gap:20px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#475569}';
+  html+='.meta strong{color:#1e293b}.clues{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}';
+  html+='.cok{background:#dcfce7;border:1px solid #16a34a;border-radius:6px;padding:3px 12px;font-weight:700;font-size:12px;color:#15803d}';
+  html+='.cno{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:3px 12px;font-size:12px;color:#94a3b8}';
+  html+='.eb{border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:14px;page-break-inside:avoid}';
+  html+='.eh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}';
+  html+='.en{font-weight:700;font-size:13px}.el{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:1px}';
+  html+='.tg{border-radius:5px;padding:2px 9px;font-size:11px;font-weight:700}.tp{background:#dcfce7;color:#15803d}.tf{background:#fee2e2;color:#dc2626}.tt{background:#fef3c7;color:#92400e;margin-left:4px}';
+  html+='.sc{font-size:12px;color:#475569;margin-bottom:8px}.qr{margin-bottom:6px;padding:7px 10px;border-radius:6px;font-size:12px;line-height:1.5}';
+  html+='.qok{background:#f0fdf4;border-left:3px solid #16a34a}.qbad{background:#fff1f2;border-left:3px solid #dc2626}';
+  html+='.qt{font-weight:700;margin-bottom:2px}.qa{color:#475569}.qc{color:#dc2626;font-style:italic}.qh{color:#2563eb;font-size:11px}';
+  html+='.sm{background:#0f172a;color:#fff;border-radius:10px;padding:16px 20px;margin-top:20px}';
+  html+='.sm h2{color:#ef4444;border:none;margin:0 0 10px}.sr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #334155;font-size:12px}';
+  html+='.st{font-weight:700;font-size:14px;color:#fbbf24;padding-top:8px}.ft{text-align:center;color:#94a3b8;font-size:10px;margin-top:20px;border-top:1px solid #e2e8f0;padding-top:12px}';
+  html+='</style></head><body>';
+  html+='<div class="hd"><h1>🔴 MISSION : LOCKDOWN</h1><p>SecuriPro | Bilan individuel</p></div><div class="bd">';
+  html+='<div class="meta"><div>🆔 Agent : <strong>'+G.agentId+'</strong></div><div>👥 Équipe : <strong>'+G.team+'</strong></div><div>📅 <strong>'+date+'</strong></div><div>🏆 Score : <strong style="color:#dc2626">'+G.score+' pts</strong></div></div>';
+  html+='<h2>🔐 Fragments</h2><div class="clues">';
+  for(var i=0;i<CLUES.length;i++) html+=G.cluesFound.indexOf(i)>=0?'<div class="cok">'+CLUES[i]+'</div>':'<div class="cno">???</div>';
+  html+='</div><p style="font-size:12px;font-weight:700;color:'+(G.cluesFound.length===CLUES.length?'#15803d':'#dc2626')+'">'+(G.cluesFound.length===CLUES.length?'✅ Tous les fragments récupérés !':'❌ '+G.cluesFound.length+'/'+CLUES.length+' fragments.')+'</p>';
+  html+='<h2>📋 Détail des exercices</h2>';
+  var logs=G.sessionLog;
+  for(var li=0;li<logs.length;li++){
+    var log=logs[li];
+    html+='<div class="eb"><div class="eh"><div><div class="el">Niveau '+log.levelId+'</div><div class="en">'+log.exTitle+'</div></div>';
+    html+='<div><span class="tg '+(log.passed?'tp':'tf')+'">'+(log.passed?'✅ Réussi':'❌ Échoué')+'</span>'+(log.timerExpired?'<span class="tg tt">⏱</span>':'')+'</div></div>';
+    html+='<div class="sc">Score : <strong>'+log.score+'/'+log.total+'</strong> | Seuil : <strong>'+log.passScore+'/'+log.total+'</strong> | Points : <strong style="color:'+(log.passed?'#16a34a':'#dc2626')+'">'+(log.pts>0?'+':'')+log.pts+'</strong>'+(log.timerExpired?' | <strong style="color:#dc2626">-10 timer</strong>':'')+'</div>';
+    for(var di=0;di<log.details.length;di++){
+      var d=log.details[di];
+      html+='<div class="qr '+(d.isCorrect?'qok':'qbad')+'">';
+      if(log.exType==='oral'){
+        html+='<div class="qt">Présentation orale</div><div class="qa">Code : <strong>'+d.userAns+'</strong> — Seuil : <strong>'+d.correctAns+'</strong></div>';
+      } else if(log.exType==='match'){
+        html+='<div class="qt">'+(d.isCorrect?'✅':'❌')+' '+d.question+'</div><div class="qa">Choix : <em>'+d.userAns+'</em></div>';
+        if(!d.isCorrect) html+='<div class="qc">✔ Bonne : <em>'+d.correctAns+'</em></div>';
+      } else if(log.exType==='truefalse'){
+        html+='<div class="qt">'+(d.isCorrect?'✅':'❌')+' Q'+(di+1)+'. '+d.question+'</div>';
+        html+='<div class="qa">Réponse : <strong>'+(d.userAns?'TRUE':'FALSE')+'</strong></div>';
+        if(!d.isCorrect){ html+='<div class="qc">✔ Bonne : <strong>'+(d.correctAns?'TRUE':'FALSE')+'</strong></div>'; if(d.correction) html+='<div class="qh">💡 '+d.correction+'</div>'; }
+      } else {
+        html+='<div class="qt">'+(d.isCorrect?'✅':'❌')+' Q'+(di+1)+'. '+d.question+'</div>';
+        html+='<div class="qa">Réponse : <strong>'+d.userAns+'</strong></div>';
+        if(!d.isCorrect) html+='<div class="qc">✔ Bonne : <strong>'+d.correctAns+'</strong></div>';
+      }
+      html+='</div>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="sm"><h2>📊 Récapitulatif</h2>';
+  for(var si=0;si<logs.length;si++) html+='<div class="sr"><span>'+logs[si].exTitle+'</span><span>'+(logs[si].pts>0?'+':'')+logs[si].pts+' pts'+(logs[si].timerExpired?' (-10)':'')+'</span></div>';
+  html+='<div class="sr st"><span>SCORE FINAL</span><span>'+G.score+' pts</span></div></div>';
+  html+='<div class="ft">Créé par C. Iemfre — Mission : Lockdown</div></div></body></html>';
+  var w=window.open('','_blank');
+  if(!w){ alert('Autorisez les popups pour générer le PDF.'); return; }
+  w.document.write(html); w.document.close(); w.focus();
+  setTimeout(function(){ w.print(); },800);
+}
+
+/* ── DATA ── */
+var LEVELS=[
+{id:1,title:"Niveau 1 — Le Poste d'Accueil",intro:"Avant d'accéder au site, tous les agents doivent passer par le poste d'accueil. Prouvez que vous connaissez les bases du métier.",exercises:[
+  {id:"1-1",type:"qcm",timer:420,passScore:8,instruction:"Answer the questions. You have 7 minutes.",title:"Security Knowledge Check — Exercise 1",questions:[
+    {q:"A security officer on patrol is:",opts:["Writing a report","Welcoming visitors","Walking around the site to check for problems","On a break"],ans:2},
+    {q:"A visitor has no appointment. The officer should:",opts:["Let them in","Call the police","Refuse and close the door","Ask for ID and contact the right person"],ans:3},
+    {q:"The word 'perimeter' means:",opts:["A camera","The boundary around a protected area","A written report","A badge"],ans:1},
+    {q:"An officer finds an unattended bag. First action:",opts:["Open the bag","Ask people nearby","Ignore it","Follow the suspicious item procedure and alert the supervisor"],ans:3},
+    {q:"Which is a physical security measure?",opts:["A firewall","An antivirus","A turnstile at the entrance","An encrypted email"],ans:2},
+    {q:"An officer 'on post' is:",opts:["On a break","Writing a report","On patrol","Watching a fixed point"],ans:3},
+    {q:"Which document is written after an unusual event?",opts:["An incident report","A duty list","A payslip","A visitor register"],ans:0},
+    {q:"An emergency exit must be:",opts:["For staff only","Locked at night","Always clear and accessible","Used as the main entrance"],ans:2},
+    {q:"'Access control' is:",opts:["An evacuation plan","A patrol log","A camera system","A system that controls who enters an area"],ans:3},
+    {q:"A short meeting before a shift is called:",opts:["A briefing","A patrol","An incident report","An access check"],ans:0}
+  ]},
+  {id:"1-2",type:"qcm",timer:null,passScore:8,instruction:"First check failed. A second test has been loaded.",title:"Security Knowledge Check — Exercise 2",questions:[
+    {q:"A 'duty log' is:",opts:["A team list","A document where the officer writes all events during a shift","A list of patrol routes","A police report"],ans:1},
+    {q:"Can a security officer arrest someone?",opts:["Yes, always","No — never","No — they can hold someone caught in the act and must call the police","Yes, if in uniform"],ans:2},
+    {q:"A 'restricted area' is:",opts:["An area where only authorised people can enter","An area for visitors","An area open to everyone","An area with no cameras"],ans:0},
+    {q:"An officer sees a fire. First action:",opts:["Wait for the fire brigade","Turn off the lights","Call the supervisor","Trigger the alarm and start the evacuation"],ans:3},
+    {q:"A staff badge is lost. The officer should:",opts:["Wait 24 hours","Give a new badge without a report","Report it and deactivate the badge immediately","Let the employee in if known"],ans:2},
+    {q:"How should an officer deal with an aggressive person?",opts:["Leave immediately","Be aggressive back","Ignore them","Stay calm and call for help if needed"],ans:3},
+    {q:"A visitor register records:",opts:["Patrol routes","Incidents on site","Officers on duty","Who enters and leaves the site"],ans:3},
+    {q:"Which behaviour is suspicious?",opts:["A visitor waiting at reception","An employee arriving on time","A delivery driver showing documents","A person near a restricted area for no reason"],ans:3},
+    {q:"'Confidentiality' means:",opts:["Posting procedures online","Talking about incidents with family","Not sharing sensitive information with unauthorised people","Sharing site info with colleagues"],ans:2},
+    {q:"A 'handover' means:",opts:["Signing a new contract","Sending a monthly report","Giving equipment to the manager","Passing information to the next team"],ans:3}
+  ]}
+]},
+{id:2,title:"Niveau 2 — La Salle des Rapports",intro:"L'agent de permanence a été retrouvé avec son badge désactivé. Deux rapports ont été signalés comme suspects.",exercises:[
+  {id:"2-1",type:"truefalse",timer:null,passScore:6,instruction:"Report #A-114 has been loaded. Read it carefully.",title:"Reading Comprehension — True / False",
+  report:"SecuriPro — Incident Report #A-114\nSite: Logipro Warehouse — Entrance B\nDate: Sunday 14 April — 11:47 PM / Officer: D. Martin — Badge #2281\n\nAt 11:47 PM, Officer Martin was on patrol when he found the side door open. The door should have been locked after 8:00 PM. There were no signs of forced entry. He called the control room and waited for backup before going inside.\n\nInside, the storage room had been entered. Some boxes had been moved. A laptop was missing. The site manager was called at 12:15 AM. No one was found. Cameras 4 and 7 had been turned off between 10:30 PM and 11:50 PM.\n\nOnly three employees have a key to the storage room. Police were called at 12:20 AM and arrived at 12:52 AM. The door was secured.\nStatus: Under investigation",
+  questions:[
+    {q:"Officer Martin found the open door during a patrol.",ans:true},
+    {q:"The door had been forced open.",ans:false,correction:"There were no signs of forced entry."},
+    {q:"Officer Martin entered the building alone straight away.",ans:false,correction:"He waited for backup before going inside."},
+    {q:"A laptop was missing.",ans:true},
+    {q:"The site manager was called before midnight.",ans:false,correction:"He was called at 12:15 AM — after midnight."},
+    {q:"Both cameras had been off for more than one hour.",ans:true},
+    {q:"The police arrived less than 30 minutes after being called.",ans:false,correction:"Called 12:20 AM, arrived 12:52 AM = 32 minutes."},
+    {q:"Only three people had a key to the storage room.",ans:true}
+  ]},
+  {id:"2-2",type:"qcm",timer:null,passScore:6,instruction:"Report #A-114 analysis failed. Report #B-227 has been flagged.",title:"Reading Comprehension — QCM",
+  report:"SecuriPro — Incident Report #B-227\nSite: Westpark Shopping Centre — Main Entrance\nDate: Saturday 20 April — 2:15 PM / Officer: T. Renard — Badge #1047\n\nAt 2:15 PM, a customer told Officer Renard that a woman had fallen near the food court on the first floor. Officer Renard called the control room, asked for a first aider and went to the location.\n\nHe found a woman in her sixties on the floor — awake but confused. A first aider arrived in less than three minutes. Officer Renard set up a two-metre perimeter to keep people away and let emergency services through.\n\nAn ambulance was called at 2:19 PM and arrived at 2:31 PM. The woman was taken to hospital. Officer Renard gave his report before the end of his shift. No suspicious activity noted.\nStatus: Closed",
+  questions:[
+    {q:"Who told Officer Renard about the incident?",opts:["The site manager","His supervisor","Another officer","A customer"],ans:3},
+    {q:"Where did it happen?",opts:["In the car park","On the ground floor","At the main entrance","Near the food court on the first floor"],ans:3},
+    {q:"What was the woman's condition?",opts:["Already treated","Unconscious","Awake but confused","Standing but in pain"],ans:2},
+    {q:"How long did the first aider take?",opts:["Ten minutes","Five minutes","Less than three minutes","Immediately"],ans:2},
+    {q:"Why did Officer Renard set up a perimeter?",opts:["To film the scene","To look for suspects","To keep people away and let emergency services through","To wait for the ambulance"],ans:2},
+    {q:"How long did the ambulance take after being called?",opts:["4 minutes","20 minutes","8 minutes","12 minutes"],ans:3},
+    {q:"When did Officer Renard give his report?",opts:["The next morning","At the start of his next shift","When the ambulance arrived","Before the end of his shift"],ans:3},
+    {q:"Was suspicious activity noted?",opts:["Yes, more investigation needed","Yes, a suspect was found","No suspicious activity was noted","Yes, linked to another case"],ans:2}
+  ]}
+]},
+{id:3,title:"Niveau 3 — La Situation en Direct",intro:"Une situation vient de se produire. Un agent tiré au sort intervient immédiatement devant le professeur.",exercises:[
+  {id:"3-1",type:"oral",timer:null,passScore:8,instruction:"Agent [tiré au sort], gérez la situation devant votre professeur.",title:"Live Situation — Role Play #1",
+  situation:"You are on post at a warehouse entrance.\nA delivery driver arrives without an appointment.\nHe has no delivery note, no badge and no ID.\nHe says it is urgent. He is getting impatient.\nYour supervisor is not available.",
+  task:"Speak to the driver. Apply the correct entry procedure. Explain your decision clearly.",
+  assess:["Utilisation du vocabulaire professionnel adapté","Clarté et professionnalisme de la communication","Application correcte de la procédure de contrôle d'accès","Capacité à rester calme sous pression"]},
+  {id:"3-2",type:"oral",timer:null,passScore:7,instruction:"Prestation insuffisante. Deuxième situation. Un autre agent devant le professeur.",title:"Live Situation — Role Play #2",
+  situation:"You are on a night patrol in an office building.\nYou see a light on in a room that should be empty.\nThe door is unlocked.\nInside: a man in casual clothes with a laptop.\nHe says he is an IT technician. He has no badge.\nHis name is not on the access list.",
+  task:"Question the person. Decide what to do. Report the incident to your supervisor.",
+  assess:["Utilisation du vocabulaire professionnel adapté","Capacité à interroger une personne suspecte","Prise de décision et respect des procédures","Compte rendu oral clair et structuré"]}
+]},
+{id:4,title:"Niveau 4 — Le Labo des Définitions",intro:"Des messages cryptés ont été retrouvés. Associez chaque terme à sa définition. Bilan affiché à la fin.",exercises:[
+  {id:"4-1",type:"match",timer:360,passScore:8,instruction:"Associez chaque terme à sa définition. Cliquez sur un terme puis sur sa définition. Bilan à la fin.",title:"Match the Terms — Exercise 1",pairs:[
+    {term:"HANDOVER",def:"Passing tasks and incident info to the next team at end of shift."},
+    {term:"BRIEFING",def:"A short meeting before a shift to give instructions and information."},
+    {term:"CHAIN OF COMMAND",def:"The structure defining who gives and receives orders in a security team."},
+    {term:"LIABILITY",def:"The legal responsibility for damages or injuries on a site."},
+    {term:"RESTRICTED AREA",def:"A zone where only authorised people are allowed to enter."},
+    {term:"SECURITY BREACH",def:"When an unauthorised person gets into a protected area or system."},
+    {term:"CONFIDENTIALITY",def:"The obligation not to share sensitive information with unauthorised people."},
+    {term:"RADIO",def:"A portable device used to communicate with the control room."},
+    {term:"ESCORTING",def:"Walking with a visitor through a secure area to keep control."},
+    {term:"PATROL ROUTE",def:"A planned route followed by an officer during a site check."}
+  ]},
+  {id:"4-2",type:"match",timer:480,passScore:8,instruction:"Nouveau lot de termes. Associez chaque terme à sa définition. Bilan à la fin.",title:"Match the Terms — Exercise 2",pairs:[
+    {term:"TRESPASSING",def:"Entering a property without permission or legal right."},
+    {term:"VANDALISM",def:"Deliberately damaging property that does not belong to you."},
+    {term:"FIRST AID",def:"Basic medical help given before professional help arrives."},
+    {term:"EVACUATION",def:"Moving people out of a building quickly and safely in case of danger."},
+    {term:"SHIFT",def:"A fixed period of time during which an officer is on duty."},
+    {term:"SUSPICIOUS BEHAVIOUR",def:"Actions that suggest a person may be planning something wrong."},
+    {term:"WITNESS",def:"A person who sees an incident and can give information about it."},
+    {term:"STATEMENT",def:"A written or spoken account of what a person saw during an incident."},
+    {term:"CCTV",def:"A camera system used to record and monitor activity in an area."},
+    {term:"CHECKPOINT",def:"A fixed point where people or vehicles are checked before passing through."}
+  ]}
+]},
+{id:5,title:"Niveau 5 — Le Bureau du Responsable",intro:"Secteur final. Trois fiches d'incident. Un agent tiré au sort fait un compte rendu oral devant le professeur. Pas de préparation. Pas de notes.",exercises:[
+  {id:"5-1",type:"oral",timer:null,passScore:8,instruction:"Fiche n°1. Agent [tiré au sort], compte rendu devant le professeur.",title:"Oral Account — Incident Report #1",
+  situation:"SecuriPro — Incident Report\nSite: Logipro Warehouse — Gate B\nDate: Friday 19 April — 2:30 AM / Officer: S. Michel\n\nAt 2:30 AM, Gate B was found wide open. Tyre tracks led into the warehouse. Backup was called.\nThe loading bay had been broken into. Three pallets of equipment were missing. Two windows smashed. Tools suggested at least two people involved.\nCCTV cameras had been spray-painted. Police: called 2:45 AM, arrived 3:10 AM. Manager informed 3:15 AM. Gate secured.\nStatus: Under investigation — Case 2024/AR/0471",
+  task:"Tell your supervisor what happened. Cover: what, when, what was found, what was done, current status.",
+  assess:["Tous les faits essentiels sont couverts","Compte rendu clair et structuré","Vocabulaire professionnel utilisé","L'élève parle sans lire le texte"]},
+  {id:"5-2",type:"oral",timer:null,passScore:7,instruction:"Compte rendu insuffisant. Fiche n°2. Agent [tiré au sort], devant le professeur.",title:"Oral Account — Incident Report #2",
+  situation:"SecuriPro — Incident Report\nSite: Beaumont Medical Centre — Reception\nDate: Tuesday 23 April — 11:05 AM / Officer: P. Nguyen\n\nAt 11:05 AM, a man demanded to see the manager, claiming unfair dismissal. He became aggressive and shouted at the receptionist.\nOfficer Nguyen stayed calm and asked the man to be quiet. The man refused. Backup called — second officer arrived in four minutes.\nThe man was escorted out and warned about a site ban. Details passed to HR. No violence occurred.\nStatus: Closed — individual banned from site",
+  task:"Tell your supervisor what happened. Cover: what, when, what was found, what was done, current status.",
+  assess:["Tous les faits essentiels sont couverts","Compte rendu clair et structuré","Vocabulaire professionnel utilisé","L'élève parle sans lire le texte"]},
+  {id:"5-3",type:"oral",timer:null,passScore:7,instruction:"Dernière chance. Fiche n°3. Agent [tiré au sort], devant le professeur.",title:"Oral Account — Incident Report #3",
+  situation:"SecuriPro — Incident Report\nSite: Westpark Conference Centre — Car Park Level 2\nDate: Wednesday 24 April — 7:50 PM / Officer: A. Torres\n\nAt 7:50 PM, Officer Torres found a car with smashed windows. A bag and coat were visible inside. A briefcase had been forced open on the ground.\nOfficer Torres secured the area and found the owner — a conference delegate — at 8:05 PM.\nCCTV: man in dark hoodie at car 7:32 PM, leaving 7:36 PM. Footage handed to police, arrived 8:30 PM.\nStatus: Closed — CCTV passed to police",
+  task:"Tell your supervisor what happened. Cover: what, when, what was found, what was done, current status.",
+  assess:["Tous les faits essentiels sont couverts","Compte rendu clair et structuré","Vocabulaire professionnel utilisé","L'élève parle sans lire le texte"]}
+]}
+];
+
+})();
+</script>
+</body>
+</html>
